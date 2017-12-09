@@ -1,6 +1,6 @@
 <template>
   <div class="cards-cont">
-<!--   			<div>
+  			<div>
   				<md-input-container style="padding:1;margin:0;">
                					 <label>Upload Data</label>
                					 <md-input style="padding:0;margin:0;" 
@@ -9,8 +9,8 @@
             	</md-input-container>
   				<br><md-button @click="submit">Submit</md-button>
   				<div>{{posts}}</div>
-  			</div> -->
-  			<md-card v-for="(post,index) in filtered" class="card" >
+  			</div>
+  			<md-card v-for="(post,index) in posts" class="card" >
 				  <md-card-header>
 				    <md-avatar>
 				      <img src="/src/assets/manavatar.png" alt="People">
@@ -76,14 +76,26 @@ export default {
 		}
 	},
 	created(){
-		axios.get('https://sportsclub-96f61.firebaseio.com/posts.json').then((response)=>{
-			  var arry=[]
-		      for (let key in response.data) {
-		      	response.data[key].id=key
-		        arry.push(response.data[key])
+		// axios.get('https://sportsclub-96f61.firebaseio.com/posts.json').then((response)=>{
+		// 	  var arry=[]
+		//       for (let key in response.data) {
+		//       	response.data[key].id=key
+		//         arry.push(response.data[key])
+		//       }
+		//       this.posts=arry.reverse();
+  //   	})
+  		        var ref = dtb.ref("posts/");
+        // Attach an asynchronous callback to read the data at our posts reference
+        	var arry=[]
+          ref.on("value", function(snapshot) {
+
+		      for (let key in snapshot.val()) {
+		      	snapshot.val()[key].id=key
+		        arry.push(snapshot.val()[key])
 		      }
-		      this.posts=arry.reverse();
-    	})
+		      // this.posts=arry.reverse();
+          });
+          this.posts=arry.reverse();
     	isLoggedIn().then(userinfo => {
       		this.user=userinfo
     	})
@@ -91,11 +103,11 @@ export default {
 		// console.log(top)
 	},
 	computed:{
-		filtered:function(){
-			return this.posts.filter((post)=>{
-				return post.name.match(this.search);
-			})
-		}
+		// filtered:function(){
+		// 	return this.posts.filter((post)=>{
+		// 		return post.name.match(this.search);
+		// 	})
+		// }
 
 	},
 	methods:{
@@ -105,6 +117,7 @@ export default {
 			var newPostKey = dtb.ref().child('posts').push().key;
 			var updates = {};
   				updates['/posts/' + newPostKey] = postsend;
+  				postsend={name:'working',like:['1']}
 			return firebase.database().ref().update(updates);
 
 		},

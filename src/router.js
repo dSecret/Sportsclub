@@ -9,7 +9,9 @@ const profile =()=> import('./pages/profile/profile.vue');
 	const profileEvents =()=> import('./pages/profile/events/events.vue')
 	const profileAbout =()=> import('./pages/profile/about/about.vue')
 	const profileSettings =()=> import('./pages/profile/settings/settings.vue')
-
+const admin =()=> import('./pages/admin/admin.vue')
+	const upequipls =()=> import('./pages/admin/UpdateEquipListtabcont.vue')
+	const reqequip =()=> import('./pages/admin/reqequip.vue')
 
 // authfunctions
 import {requireauth,authenticated} from './helpers/authfunc'
@@ -30,6 +32,12 @@ const router = new VueRouter({
 		{path:'settings',component:profileSettings},
 	  ]
 	},
+	{path:'/admin',component:admin,
+		children:[
+			{path:'updateequipls',component:upequipls},
+			{path:'reqequip',component:reqequip}
+		]
+	}
   ]
 });
 
