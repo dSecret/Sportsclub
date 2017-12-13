@@ -105,20 +105,33 @@ components:{
       filtered:[],
       selectedcart:[],
       removemsg:'remove from cart',
-      req:{id:'',user:'',date:'',cart:[],msg:''}
+      req:{id:'',user:'',date:'',cart:[],msg:'',status:'Pending',reply:''}
     }
   },
   created(){
           var ref = dtb.ref("equipments/");
           var arry=[]
-          ref.on("value", function(snapshot) {
-                arry=[]
-                for (let key in snapshot.val()) {
-                  arry.push(snapshot.val()[key])
-                }
-                console.log(arry.length)
-          });
-          this.equipnames=arry
+          var foo
+          foo=new Promise((resolve,reject)=>{
+                  ref.on("value", function(snapshot) {
+                    arry=[]
+                    if(snapshot.val()){
+                      for (let key in snapshot.val()) {
+                        arry.push(snapshot.val()[key])
+                      }
+                      resolve(arry)
+                    }
+                    else{
+                      reject([])
+                    }
+                  });
+          })
+
+          foo.then((bar)=>{
+              this.equipnames=bar
+          })
+
+          // this.equipnames=arry
 
   },
   computed:{
@@ -128,7 +141,6 @@ components:{
                         foo.push(e.sport)
             })
         var bar=Array.from(new Set(foo))
-        console.log(bar)
         return  bar
       }
   },
@@ -162,21 +174,22 @@ components:{
         this.selectedcart.splice(index,1);
     },
     reqitem:function(){
-                var postsend={id:'',user:'',date:'',cart:[],msg:''}
+                var postsend={  id:'',user:'',date:'',cart:[],
+                                msg:'',status:'Pending',reply:''
+                              }
                 var newPostKey = dtb.ref().child('equipreqs').push().key;
                     this.req.id=newPostKey
                     this.selectedcart.forEach((e)=>{
                           this.req.cart.push(e.id)
                     })
-                    this.req.user=firebase.auth().currentUser.uid
+                    this.req.user=firebase.auth().currentUser.email.slice(0,9)
                     this.req.date=new Date()
                 var updates = {};
                     updates['/equipreqs/' + newPostKey] = this.req;
                     this.req=postsend
-                    this.seelcted
+                    this.selectedcart=[]
                 return dtb.ref().update(updates);
-    }
-
+    },
 },
 
 

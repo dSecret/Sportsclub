@@ -11,7 +11,10 @@ const profile =()=> import('./pages/profile/profile.vue');
 	const profileSettings =()=> import('./pages/profile/settings/settings.vue')
 const admin =()=> import('./pages/admin/admin.vue')
 	const upequipls =()=> import('./pages/admin/UpdateEquipListtabcont.vue')
-	const reqequip =()=> import('./pages/admin/reqequip.vue')
+	const equipreq =()=> import('./pages/admin/equipreq.vue')
+const services =()=> import('./pages/services/services.vue')
+	const reqequip =()=> import('./pages/services/reqequip.vue')
+	const issued=()=>import('./pages/services/issued.vue')
 
 // authfunctions
 import {requireauth,authenticated} from './helpers/authfunc'
@@ -35,7 +38,13 @@ const router = new VueRouter({
 	{path:'/admin',component:admin,
 		children:[
 			{path:'updateequipls',component:upequipls},
-			{path:'reqequip',component:reqequip}
+			{path:'equipreq',component:equipreq}
+		]
+	},
+	{path:'/services',component:services,
+		children:[
+			{path:'reqequip',component:reqequip},
+			{path:'issued',component:issued}
 		]
 	}
   ]

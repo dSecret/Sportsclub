@@ -72,10 +72,10 @@ export default {
 
   data () {
     return {
-        updatelist:{sport:'',equip:'',total:0,id:''},
+        updatelist:{sport:'',equip:'',total:0,id:'',rem:0},
         stat:true,
         start:false,
-        epls:[{sport:'',equip:'',total:0,id:''}],
+        epls:[{sport:'',equip:'',total:0,id:'',rem:0}],
         equips:[],
         equipstat:false
     }
@@ -94,27 +94,38 @@ export default {
   created(){
           var ref = dtb.ref("equipments/");
           var arry=[]
-          ref.on("value", function(snapshot) {
-                arry=[]
-                for (let key in snapshot.val()) {
-                  arry.push(snapshot.val()[key])
-                }
-                console.log(arry.length)
-          });
-          this.epls=arry
+          var foo
+          foo=new Promise((resolve,reject)=>{
+                  ref.on("value", function(snapshot) {
+                    arry=[]
+                    if(snapshot.val()){
+                      for (let key in snapshot.val()) {
+                        arry.push(snapshot.val()[key])
+                      }
+                      resolve(arry)
+                    }
+                    else{
+                      reject([])
+                    }
+                  });
+          })
+          foo.then((bar)=>{
+              this.epls=bar
+          })
   },
   methods:{
     cancel:function(){
-      this.updatelist={sport:'',equip:'',total:0,id:''}
+      this.updatelist={sport:'',equip:'',total:0,id:'',rem:0}
     },
     fetchSel:function(foo){
       this.updatelist=foo
     },
     addSel:function(){
           if(this.stat) {
-                var postsend={sport:'',equip:'',total:0,id:''}
+                var postsend={sport:'',equip:'',total:0,id:'',rem:0}
                 var newPostKey = dtb.ref().child('equipments').push().key;
                     this.updatelist.id=newPostKey
+                    this.updatelist.rem=this.updatelist.total
                 var updates = {};
                     updates['/equipments/' + newPostKey] = this.updatelist;
                     // this.updatelist=postsend
@@ -124,7 +135,7 @@ export default {
           else{
               let foo=this.updatelist
                   this.start=false
-
+                  this.updatelist.rem=this.updatelist.total
               return dtb.ref('equipments/'+ foo.id).set(foo)
           }
     },
