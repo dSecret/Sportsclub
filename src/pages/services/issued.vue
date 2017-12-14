@@ -19,7 +19,7 @@
                         <md-table-cell 
                                         style="color:red"
                                         >
-                                        <div @click="getBack(tit.equip)">Return</div>
+                                        <div @click="getBack(tit.equip,tit.id)">Return</div>
                         </md-table-cell>
                       </md-table-row>
                     </md-table-body>
@@ -99,7 +99,7 @@ export default {
       }
   },
   methods:{
-    getBack:function(foo){
+    getBack:function(foo,bar){
               var updates = {};
                   this.equips.forEach(e=>{
                           if(e.id===foo){
@@ -108,6 +108,7 @@ export default {
                           }
                   })
                   dtb.ref().update(updates)
+                  dtb.ref('/issuedequip/'+bar).remove()
     }
   }
 }
