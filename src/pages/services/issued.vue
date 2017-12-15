@@ -47,7 +47,7 @@ export default {
           var foo
           var zoo
           foo=new Promise((resolve,reject)=>{
-                  ref.on("value", function(snapshot) {
+                  ref.on("child_removed", function(snapshot) {
                     arry=[]
                     if(snapshot.val()){
                       for (let key in snapshot.val()) {

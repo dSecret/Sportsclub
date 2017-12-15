@@ -1,37 +1,42 @@
 <template>
 	<div >
-		<div class="wrap-dp">
-			<div class="cont-dp">
-				<img class="dp" :src="user.photoUrl"/>
-			</div>
-			<div class="profile-info">
-					<div class="mylist-item ">{{user.name}}</div>
-					<div class="mylist-item ">{{user.email}}</div>
-					<div class="mylist-item ">+91-9795455055</div>
+			<div v-if="!error">
+				<div class="wrap-dp">
+					<div class="cont-dp">
+						<img class="dp" :src="user.photoUrl"/>
+					</div>
+					<div class="profile-info">
+							<div class="mylist-item ">{{user.name}}</div>
+							<div class="mylist-item ">{{user.email}}</div>
+							<div class="mylist-item ">+91-9795455055</div>
 
+					</div>
+				</div>
+				<md-tabs md-sync-route 
+						class="md-transparent" 
+						md-alignment="centered"
+						style="border:1px solid lightgrey"
+				>
+				      
+					      <md-tab 	:id="linki.icon" 
+					      			:md-icon="linki.icon" 
+					      			:to="linki.path"
+					      			 v-for="linki in tabLinks" 
+					      >
+					      		Coming Soon...
+					      </md-tab>
+					  
+				</md-tabs>
 			</div>
-		</div>
-		<md-tabs md-sync-route 
-				class="md-transparent" 
-				md-alignment="centered"
-				style="border:1px solid lightgrey"
-		>
-		      
-			      <md-tab 	:id="linki.icon" 
-			      			:md-icon="linki.icon" 
-			      			:to="linki.path"
-			      			 v-for="linki in tabLinks" 
-			      >
-			      		Coming Soon...
-			      </md-tab>
-			  
-		</md-tabs>
-		
+			<div v-if="error">
+					Trying logging with account which matches with @nitdelhi.ac.in
+			</div>
 	</div>
 
 </template>
 
 <script>
+import firebase from 'firebase'
 import {isLoggedIn,logOut} from '../helpers/authfunc'
 export default {
 	data(){
@@ -42,13 +47,36 @@ export default {
 				{path:'/profile/event',icon:'events'},
 				{path:'/profile/about',icon:'person'},
 				{path:'/profile/settings',icon:'settings'}
-			]
+			],
+			error:false,
 		}
 	},
   	created() {
+  		var err
     	isLoggedIn().then(userinfo => {
-      		this.user=userinfo
+      		// this.user=userinfo
+      			var dtb=firebase.database()
+      			var id=userinfo.email.slice(0,9)
+      			
+				dtb.ref('/users/'+id).on('value',(snap)=>{
+							if(snap.exists()){
+								return this.user=snap.val()
+							}
+							else{
+								let foo=userinfo.email.includes('nitdelhi.ac.in')
+								if(foo){
+									// err=true
+									return dtb.ref('users/'+ id).set(userinfo)
+								}
+								else{
+									return logOut()
+									// this.$router.push('/')
+								}
+							}
+				})
     	})
+    	// console.log(err)
+    	// return this.error=err
   },
 }
 </script>
