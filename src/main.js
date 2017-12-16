@@ -7,7 +7,28 @@ import VueMaterial from 'vue-material'
 
 Vue.use(VueRouter)
 Vue.use(VueMaterial)
-
+Vue.material.registerTheme({
+  teal: {
+    primary: {
+        color: 'lightgreen',
+        hue: 500
+    },
+    accent: {
+    color: 'grey',
+    hue: 300
+    }
+  },
+  blue: {
+    primary: {
+        color: 'blue',
+        hue: 500
+    },
+    accent: {
+    color: 'grey',
+    hue: 300
+    }
+  }
+})
 
 
 new Vue({

@@ -1,21 +1,18 @@
 <template>
   <div class="cards-cont">
-  			<md-card v-for="(post,index) in filtered" class="card" >
+  			<md-card  class="card" >
+
 				  <md-card-header>
-				    <div class="md-title">
-				    		<router-link :to="'/'+post.id">
-				    				{{post.title}}
-				    		</router-link>
-				    </div>
-				    <div class="md-subhead">{{post.date}}</div>
+				    <div class="md-title">{{p.title}}</div>
+				    <div class="md-subhead">{{p.date}}</div>
 				  </md-card-header>
 
 				  <md-card-media align="center" style="backgound-color:black">
-				    <img :src="post.banner" class="banner"alt="People">
+				    <img :src="p.banner" class="banner"alt="People">
 				  </md-card-media>
 
 				  <md-card-content>
-				    {{post.body}}
+				    {{p.body}}
 				  </md-card-content>
 
 				  <md-card-actions>
@@ -23,12 +20,12 @@
 				  			style="margin-right:9px"
 				  			>LogIn to react
 				  	</span> 
-				  	<b >{{likes[index].user.length}}</b>
+				  	<b >{{like.user.length}}</b>
 				   <md-button class="md-icon-button " 
-								@click="handleLike(checkLike(index),post.id,index)"
+								@click="handleLike(checkLike(),p.id)"
 								:disabled="!usr"
 				    		   >
-				    	<md-icon :class="{likeBut:checkLike(index)}"
+				    	<md-icon :class="{likeBut:checkLike()}"
 				    			>favorites
 				    	</md-icon>
 				    </md-button>
@@ -37,11 +34,15 @@
 				    </md-button>
 				  </md-card-actions>
 			</md-card>
-	
+			<md-whiteframe md-elevation="2"
+						   class="form-cont"
+			>
+					<a  v-for="f in p.forms":href="f.linki">{{f.title}}</a>
+			</md-whiteframe>
 			<!-- scroll to top button -->
 			<a href="#scrollTop">
-		         <md-button class="md-fab md-medium md-accent locate"
-							style="background-color:#F48FB1;"
+		         <md-button class="md-fab md-medium md-primary locate"
+							style="background-color:#039be5;"
 		         >
 		            <md-icon>eject</md-icon>
 		          </md-button>
@@ -59,34 +60,26 @@ export default {
 	props:['search'],
 	data(){
 		return{
-			posts:[],
+			p:{},
 			user:{},
-			likes:[{id:'',user:[]}],
-			usr:''
+			like:{id:'',user:[]},
+			usr:'',
+			id:this.$route.params.id
 		}
 	},
 	created(){
-        	var arry=[]
-        	var arry1=[]
-        	dtb.ref('/likes').on("value",(snap)=>{
-							arry1=[]
-							for (let key in snap.val()) {
-						        arry1.push(snap.val()[key])
-						      }
-						    this.likes=arry1
+        	var arry1={}
+        		dtb.ref('/likes/'+this.id).on("value",(snap)=>{
+						    this.like=snap.val()
 				})
         	var foo=new Promise(res=>{
-					dtb.ref('/newposts').on("value",(snap)=>{
-							arry=[]
-							for (let key in snap.val()) {
-						        arry.push(snap.val()[key])
-						      }
-						    res(arry)
+					dtb.ref('/newposts/'+this.id).on("value",(snap)=>{
+						    res(snap.val())
 					})
 				})
         		foo.then((res)=>{
 						if(res){
-							this.posts=res
+							this.p=res
 						}
 				})
 
@@ -95,18 +88,14 @@ export default {
     			})
 	},
 	computed:{
-		filtered:function(){
-			return this.posts.filter((post)=>{
-				return post.title.match(this.search);
-			})
-		}
+	
 	},
 	methods:{
-		handleLike:function(stat,key,index){
+		handleLike:function(stat,key){
 			if(this.usr){
 				var newlike={id:'',user:[]}
 					newlike.id=key
-					newlike.user=this.likes[index].user
+					newlike.user=this.like.user
 				if(!stat){
 						newlike.user.push(this.usr)
 				}
@@ -117,9 +106,9 @@ export default {
 				dtb.ref('/likes/'+key).update(newlike)
 			}
 		},
-		checkLike:function(index){
+		checkLike:function(){
 				if(this.usr){
-					return this.likes[index].user.includes(this.usr)
+					return this.like.user.includes(this.usr)
 					// return false
 				}
 				else return false
@@ -150,5 +139,8 @@ export default {
 }
 .likeBut{
 	color:red !important;
+}
+.form-cont{
+	padding:40px 20px;
 }
 </style>

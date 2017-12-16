@@ -18,6 +18,8 @@ export default {
 <style src="vue-material/dist/vue-material.css"></style>
 <style>
 #app{
-	width:120vw;
+	width:100vw;
+	height:100vh;
+	overflow:hidden;
 }
 </style>

@@ -1,6 +1,6 @@
 <template>
   <div class="phone-viewport">
-      <md-toolbar class="md-primary top-nav" >
+      <md-toolbar class="top-nav"  >
         <div class="md-toolbar-container">
             <h2 class="md-display-1 mytitle" style="flex:1">
                   <router-link to='/' class="link-mytitle">
@@ -13,17 +13,17 @@
                         >
                       LogIn
             </router-link>
-            <md-menu md-direction="bottom left" v-if="user.email">
-              <md-button md-menu-trigger class="md-icon-button">
-                  <md-avatar style="padding:0;margin:-6px 0 0 -7px;">
-                      <img :src="user.photoUrl" alt="Avatar">
-                  </md-avatar>
-              </md-button>
-              <md-menu-content>
-                <md-menu-item><router-link to='/profile'>Profile</router-link></md-menu-item>
-                <md-menu-item @click="logOut">LogOut</md-menu-item>
-              </md-menu-content>
-            </md-menu>
+                  <md-menu md-direction="bottom left" v-if="user.email">
+                    <md-button md-menu-trigger class="md-icon-button">
+                        <md-avatar style="padding:0;margin:-8px 0 0 -8px;" class="img-cont">
+                            <img :src="user.photoUrl" alt="Avatar" class="img">
+                        </md-avatar>
+                    </md-button>
+                    <md-menu-content>
+                      <md-menu-item><router-link to='/profile'>Profile</router-link></md-menu-item>
+                      <md-menu-item @click="logOut">LogOut</md-menu-item>
+                    </md-menu-content>
+                  </md-menu>
         </div>
       </md-toolbar>
       <div style="height:10vh;width:100vw;" id="scrollTop">
@@ -85,10 +85,18 @@ export default {
 </script>
 
 <style scoped>
+.img-cont{
+  background-color: white;
+  /*padding:2px;*/
+  border:2px solid white;
+}
+
 .phone-viewport{
   /*background: none;*/
-  width:150vw;
-  
+  position:fixed;
+  top:0;
+  left:0;
+  width:100vw;
   height:100vh;
   overflow-x: hidden;
 }
@@ -98,6 +106,8 @@ export default {
   left:0;
   width:100vw;
   z-index:100;
+  background-color:#03A9F4 !important;
+        /*background-image: linear-gradient(180deg, hsl(200, 81%, 30%) 0%, #2AF598 100%) !important;*/
 }
 .link-mytitle{
   text-decoration: none !important;
@@ -117,9 +127,8 @@ export default {
   margin-top:10vh;
   margin:0 auto;
   padding:20px 0;
-
+  overflow: hidden;
 }
-
 @media only screen and (max-width:7in){
   .route-cont{
     width:98%;

@@ -4,6 +4,8 @@ const Auth=()=> import('./components/Auth.vue')
 
 // home route
 const home =()=> import('./pages/home/home.vue')
+const openpost=()=>import('./components/openpost.vue')
+
 const profile =()=> import('./pages/profile/profile.vue');
 	const profileHome =()=> import('./pages/profile/home/home.vue')
 	const profileEvents =()=> import('./pages/profile/events/events.vue')
@@ -12,6 +14,7 @@ const profile =()=> import('./pages/profile/profile.vue');
 const admin =()=> import('./pages/admin/admin.vue')
 	const upequipls =()=> import('./pages/admin/UpdateEquipListtabcont.vue')
 	const equipreq =()=> import('./pages/admin/equipreq.vue')
+	const newpost =()=>import('./pages/admin/newpost.vue')
 const services =()=> import('./pages/services/services.vue')
 	const reqequip =()=> import('./pages/services/reqequip.vue')
 	const issued=()=>import('./pages/services/issued.vue')
@@ -24,6 +27,7 @@ const router = new VueRouter({
   mode: 'history',
   routes: [
     { path: '/', component: home },
+    {path:'/:id',component:openpost},
     { path: '*', component: home },
     { path: '/login', component: Auth,beforeEnter:authenticated},
     { path: '/prot', component: Auth,beforeEnter:requireauth},
@@ -38,7 +42,8 @@ const router = new VueRouter({
 	{path:'/admin',component:admin,
 		children:[
 			{path:'updateequipls',component:upequipls},
-			{path:'equipreq',component:equipreq}
+			{path:'equipreq',component:equipreq},
+			{path:'newpost',component:newpost}
 		]
 	},
 	{path:'/services',component:services,
