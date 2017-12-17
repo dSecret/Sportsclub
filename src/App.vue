@@ -6,7 +6,6 @@
 
 <script>
 const navbar =()=>import('./components/navBar.vue') 
-
 export default {
   name: 'app',
   components: {

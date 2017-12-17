@@ -39,14 +39,6 @@
 			>
 					<a  v-for="f in p.forms":href="f.linki">{{f.title}}</a>
 			</md-whiteframe>
-			<!-- scroll to top button -->
-			<a href="#scrollTop">
-		         <md-button class="md-fab md-medium md-primary locate"
-							style="background-color:#039be5;"
-		         >
-		            <md-icon>eject</md-icon>
-		          </md-button>
-      		</a>
   </div>
 </template>
 

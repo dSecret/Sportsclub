@@ -3,22 +3,21 @@
         <div class="closebtn-cont">
             <span class="closebtn" @click="closediv">&times;</span>
         </div>
-        <div class="content-container">
+        <md-whiteframe md-elevation="2" class="content-container">
               <div class="querytimeline">
-                  <div class="even"style="padding-left:2%;" >{{req.user}}</div>
+                  <div class="even" >{{req.user}}</div>
                   <div class="even">{{req.date}}</div>
               </div>
               <div class="querytimeline" style="padding:1%;">
                   <div class="title-cart">Requested Equipments</div>
-                  </div>
                   <md-chip  
-                            style="margin:5px 0;"
+                            style="margin:5px 3px;"
                             v-for="tit in equips"
                   >
                                   {{tit.equip}}
                   </md-chip>
               </div>
-              <div v-if="req.status!=='Ok'">
+              <div v-if="req.status!=='Ok'" class="querytimeline">
                     <div class="querytimeline" style="padding:1%;">
                         <div class="req-msg">
                             {{req.msg}}
@@ -53,7 +52,7 @@
                         </div>
                     </div>
               </div>
-              <div v-if="req.status==='Ok'">
+              <div v-if="req.status==='Ok'" class="querytimeline">
                     <div style="text-align:right;">
                               <md-button  class="md-warm md-raised"
                                           @click="updateII(equips)"
@@ -62,7 +61,7 @@
                               </md-button>
                     </div>
               </div>
-        </div>
+        </md-whiteframe>
   </div>
 </template>
 
@@ -160,7 +159,11 @@ export default {
                     bar.id=newKey
                     updates['/issuedequip/'+ newKey] = bar;
                     dtb.ref().update(updates)
+                    bar={id:'',user:'',date:'',fine:0,equip:''}
+                    dtb.ref('/activity/'+this.req.user+'/issued/'+newKey).update({id:newKey})
               })
+              dtb.ref('/equipreqs/'+this.req.id).remove()
+              this.closediv()
     }
   }
 }
@@ -179,15 +182,7 @@ export default {
 }
 .even{
   background-color:#e5e8e8;
-  padding:8px 0%;
-  box-sizing: border-box;
-  -moz-box-sizing: border-box;
-  overflow-x:auto;
-  overflow-y: hidden;
-}
-.odd{
-  background-color: #f2f3f4 ;
-  padding:8px 0%;
+  padding:8px 1%;
   box-sizing: border-box;
   -moz-box-sizing: border-box;
   overflow-x:auto;

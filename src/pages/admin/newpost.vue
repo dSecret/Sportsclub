@@ -81,6 +81,14 @@
 							style="margin:5px 0"
 				>
 				</md-progress>
+<!-- 				<md-theme class="complete-example" md-name="default">
+				  <md-button class="md-fab"  :class="{ 'md-warm': progress==100 }">
+				    		<span v-if="progress<100">{{progress.toFixed(0)}}</span>
+				    		<md-icon v-if="progress==100">done</md-icon>
+				  </md-button>
+				  <md-spinner :md-size="74" :md-stroke="2.2" :md-progress="progress">
+				  </md-spinner>
+				</md-theme> -->
 				<div align="right" v-if="!cancelcount">
 					<span v-if="progress<100">Uploading</span>
 					<span v-if="progress==100">Done</span>
@@ -236,4 +244,19 @@ export default {
 	text-align: center;
 	padding:15px;
 }
+.complete-example {
+  width: 56px;
+  height: 56px;
+  position: relative;
+}
+ .md-fab {
+    margin: 0;
+  }
+
+  .md-spinner {
+    position: absolute;
+    top: 50%;
+    left: 50%;
+    transform: translate(-50%, -50%);
+  }
 </style>

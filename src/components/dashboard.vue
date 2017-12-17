@@ -1,7 +1,7 @@
 <template>
 	<div >
 			<div v-if="!error">
-				<div class="wrap-dp">
+				<md-whiteframe md-elevation="4" class="wrap-dp">
 					<div class="cont-dp">
 						<img class="dp" :src="user.photoUrl"/>
 					</div>
@@ -11,22 +11,13 @@
 							<div class="mylist-item ">+91-9795455055</div>
 
 					</div>
-				</div>
-				<md-tabs md-sync-route 
-						class="md-transparent" 
-						md-alignment="centered"
-						style="border:1px solid lightgrey"
-				>
-				      
-					      <md-tab 	:id="linki.icon" 
-					      			:md-icon="linki.icon" 
-					      			:to="linki.path"
-					      			 v-for="linki in tabLinks" 
-					      >
-					      		Coming Soon...
-					      </md-tab>
-					  
-				</md-tabs>
+				</md-whiteframe>
+				<md-whiteframe md-elevation="2" class="cont-list">
+						{{reqs}}
+				</md-whiteframe>
+				<md-whiteframe md-elevation="2" class="cont-list">
+						{{issued}}
+				</md-whiteframe>
 			</div>
 			<div v-if="error">
 					Trying logging with account which matches with @nitdelhi.ac.in
@@ -37,6 +28,7 @@
 
 <script>
 import firebase from 'firebase'
+var dtb=firebase.database()
 import {isLoggedIn,logOut} from '../helpers/authfunc'
 export default {
 	data(){
@@ -49,17 +41,21 @@ export default {
 				{path:'/profile/settings',icon:'settings'}
 			],
 			error:false,
+			reqs:[],
+			issued:[],
+			newi:[]
 		}
 	},
   	created() {
+  		var id
   		var err
     	isLoggedIn().then(userinfo => {
       		// this.user=userinfo
-      			var dtb=firebase.database()
-      			var id=userinfo.email.slice(0,9)
-      			
+      				id=userinfo.email.slice(0,9)
 				dtb.ref('/users/'+id).on('value',(snap)=>{
 							if(snap.exists()){
+								this.getList(0,id,'reqs')
+								this.getList(1,id,'issued')
 								return this.user=snap.val()
 							}
 							else{
@@ -75,9 +71,59 @@ export default {
 							}
 				})
     	})
-    	// console.log(err)
-    	// return this.error=err
+
   },
+  methods:{
+  		getList:function(t,id,from){
+  				var foo
+		  		var ref=dtb.ref('activity/'+id+'/'+from)
+		          	foo=new Promise((resolve,reject)=>{
+		          		var arry=[]
+		                  ref.on("value", function(snapshot) {
+		                    if(snapshot.val()){
+		                      for (let key in snapshot.val()) {
+		                        arry.push(snapshot.val()[key])
+		                      }
+		                      resolve(arry)
+		                    }
+		                    else{
+		                      reject([])
+		                    }
+		                  });
+		          	})
+		          	foo.then((bar)=>{
+		          		if(!t)
+		              		this.reqs=bar
+		              	else
+		              		// this.getListitem(t,bar)
+		              		this.issued=bar
+		          	})
+  				
+  		},
+  		getListitem:function(t,bar){
+  					// var too
+			  		// var ref=dtb.ref('issuedequip/-L0Y_MdYNZ0_tVGKLPdP')
+			    //       	too=new Promise((resolve,reject)=>{
+			    //       		var arry=[]
+			    //       		// bar.forEach(e=>{
+			    //       			ref.on("value", function(snapshot) {
+			    //                 	if(snapshot.val()){
+			    //                     	arry.push(snapshot.val()[key])
+			    //                   		resolve(arry)
+			    //                   	}
+			    //                   	else
+			    //                   		reject([])
+			    //               	});
+			    //       		// })
+			    //       		// if(arry.length)resolve(arry)
+			    //       	})
+			    //       	too.then((bar)=>{
+			    //       		console.log(bar)
+			    //           		this.newi=bar
+			    //       	})
+						
+  		}
+  }
 }
 </script>
 <style>
@@ -123,5 +169,9 @@ export default {
 	font-size:17px;
 	font-family:'Roboto',sans-serif;
 	
+}
+.cont-list{
+	margin-top:40px;
+	padding:20px;
 }
 </style>

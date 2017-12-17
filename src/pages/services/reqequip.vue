@@ -186,9 +186,11 @@ components:{
                     this.req.date=new Date()
                 var updates = {};
                     updates['/equipreqs/' + newPostKey] = this.req;
-                    this.req=postsend
+                    // this.req=postsend
                     this.selectedcart=[]
-                return dtb.ref().update(updates);
+                    dtb.ref().update(updates);
+                    dtb.ref('/activity/'+this.req.user+'/reqs/'+newPostKey).update({id:newPostKey})
+                return this.req=postsend
     },
 },
 

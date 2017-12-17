@@ -1,6 +1,6 @@
 <template>
   <div class="cards-wrap" id="topCard">
-			    <md-card style="padding:0;margin-bottom:10px;">
+			    <md-card style="padding:0;margin-bottom:10px;z-index:0;">
 			      <md-card-content style="padding:-5px 1px 0px 1px;" >
             				<md-input-container style="padding:1;margin:0;">
                					 <label>What are you looking for ?</label>

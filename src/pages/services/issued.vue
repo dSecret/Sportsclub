@@ -1,5 +1,5 @@
 <template>
-  <div class="wrap">
+  <md-whiteframe md-elevation="2" class="wrap">
                 <md-table>
                     <md-table-header>
                       <md-table-row>
@@ -11,20 +11,27 @@
                       </md-table-row>
                     </md-table-header>
                     <md-table-body>
-                      <md-table-row v-for="tit in newissued"  >
+                      <md-table-row v-for="(tit,index) in newissued" v-if="equips.length" >
                         <md-table-cell>{{tit.user}}</md-table-cell>
                         <md-table-cell>{{tit.date}}</md-table-cell>
                         <md-table-cell>{{tit.fine}}</md-table-cell>
                         <md-table-cell>{{tit.sport}}/{{tit.equipname}}</md-table-cell>
                         <md-table-cell 
-                                        style="color:red"
+                                        style="color:red;cursor:pointer"
                                         >
-                                        <div @click="getBack(tit.equip,tit.id)">Return</div>
+                                        <div @click="getBack(tit.equip,tit.id,index)">Return</div>
                         </md-table-cell>
                       </md-table-row>
                     </md-table-body>
                 </md-table>
-  </div>
+                <div align="center" v-if="!equips.length">
+                    <md-spinner :md-size="60" 
+                                md-indeterminate 
+                                class="md-warn"
+                          >
+                    </md-spinner>
+                </div> 
+  </md-whiteframe>
 </template>
 
 <script>
@@ -47,7 +54,7 @@ export default {
           var foo
           var zoo
           foo=new Promise((resolve,reject)=>{
-                  ref.on("child_removed", function(snapshot) {
+                  ref.on("value", function(snapshot) {
                     arry=[]
                     if(snapshot.val()){
                       for (let key in snapshot.val()) {
@@ -94,12 +101,12 @@ export default {
                               }
                         })
               })
-              console.log(bar)
+              // console.log(bar)
           return bar
       }
   },
   methods:{
-    getBack:function(foo,bar){
+    getBack:function(foo,bar,index){
               var updates = {};
                   this.equips.forEach(e=>{
                           if(e.id===foo){
@@ -109,7 +116,8 @@ export default {
                   })
                   dtb.ref().update(updates)
                   dtb.ref('/issuedequip/'+bar).remove()
-    }
+                  this.issued.splice(index,1)
+      }
   }
 }
 </script>

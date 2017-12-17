@@ -27,11 +27,11 @@ const router = new VueRouter({
   mode: 'history',
   routes: [
     { path: '/', component: home },
-    {path:'/:id',component:openpost},
+    {path:'/posts/:id',component:openpost},
     { path: '*', component: home },
     { path: '/login', component: Auth,beforeEnter:authenticated},
     { path: '/prot', component: Auth,beforeEnter:requireauth},
-    { path: '/profile', component: profile,beforeEnter:requireauth,
+    { path: '/profile', component: profile,
 	  children:[
 		{path:'home',component:profileHome},
 		{path:'events',component:profileEvents},
@@ -43,13 +43,14 @@ const router = new VueRouter({
 		children:[
 			{path:'updateequipls',component:upequipls},
 			{path:'equipreq',component:equipreq},
-			{path:'newpost',component:newpost}
+			{path:'newpost',component:newpost},
+			{path:'issued',component:issued}
 		]
 	},
 	{path:'/services',component:services,
 		children:[
-			{path:'reqequip',component:reqequip},
-			{path:'issued',component:issued}
+			{path:'reqequip',component:reqequip}
+			
 		]
 	}
   ]

@@ -3,7 +3,7 @@
   			<md-card v-for="(post,index) in filtered" class="card" >
 				  <md-card-header>
 				    <div class="md-title">
-				    		<router-link :to="'/'+post.id">
+				    		<router-link :to="'/posts/'+post.id">
 				    				{{post.title}}
 				    		</router-link>
 				    </div>
@@ -39,7 +39,7 @@
 			</md-card>
 	
 			<!-- scroll to top button -->
-			<a href="#scrollTop">
+			<a href="#scrollTop" style="z-index:0;">
 		         <md-button class="md-fab md-medium md-accent locate"
 							style="background-color:#F48FB1;"
 		         >
@@ -137,15 +137,17 @@ export default {
 .cards-cont{
 	width:100%;
 	margin:0 auto;
+	z-index:0 !important;
 }
 .card{
 	margin:10px 0;
+	z-index:0 !important;
 }
 .locate{
   position:fixed;
   bottom:0;
   left:0;
-  z-index:100;
+  z-index:00;
   background-color:red;
 }
 .likeBut{

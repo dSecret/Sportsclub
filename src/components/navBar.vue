@@ -1,31 +1,22 @@
 <template>
-  <div class="phone-viewport">
-      <md-toolbar class="top-nav"  >
+  <div class="phone-viewport" id="phview">
+      <md-whiteframe md-tag="md-toolbar" class="top-nav" md-elevation="3" >
         <div class="md-toolbar-container">
+            <md-button class="md-icon-button" @click="toggleLeftSidenav">
+                <md-icon>menu</md-icon>
+            </md-button>
             <h2 class="md-display-1 mytitle" style="flex:1">
                   <router-link to='/' class="link-mytitle">
                    SportsClub
                    </router-link>
             </h2>
-            <router-link tag="md-button" 
-                        to="/login"
-                        v-if="logStat"
-                        >
-                      LogIn
-            </router-link>
-                  <md-menu md-direction="bottom left" v-if="user.email">
-                    <md-button md-menu-trigger class="md-icon-button">
-                        <md-avatar style="padding:0;margin:-8px 0 0 -8px;" class="img-cont">
-                            <img :src="user.photoUrl" alt="Avatar" class="img">
-                        </md-avatar>
-                    </md-button>
-                    <md-menu-content>
-                      <md-menu-item><router-link to='/profile'>Profile</router-link></md-menu-item>
-                      <md-menu-item @click="logOut">LogOut</md-menu-item>
-                    </md-menu-content>
-                  </md-menu>
         </div>
-      </md-toolbar>
+      </md-whiteframe>
+      <md-sidenav class="md-left" 
+                  ref="leftSidenav"
+      >
+        <sidenavCurrUser style="z-index:100;"></sidenavCurrUser>
+      </md-sidenav>
       <div style="height:10vh;width:100vw;" id="scrollTop">
       </div>
       <div class="route-cont-wrap">
@@ -33,17 +24,15 @@
             <router-view></router-view>
           </div>
       </div>
-
   </div>
 </template>
 
 <script>
 const  sidenavCurrUser=()=>import('./sidenavCurrUser.vue')
 import {isLoggedIn,logOut,logIn} from '../helpers/authfunc'
-
 export default {
   components:{
-      sidenavCurrUser
+      sidenavCurrUser,
   },
   data() {
     return {
@@ -57,15 +46,7 @@ export default {
     }
   },
   computed:{
-    // isLoggedIn().then(userinfo => {
-    //   this.user=userinfo
-    // })
-    logStat(){
-      if(!this.user.email && this.$route.path!='/login'){
-          return true
-      }
-      else return false
-    }
+    
   },
   created() {
        isLoggedIn().then(userinfo => {
@@ -79,7 +60,13 @@ export default {
     logIn(){
       logIn()
     },
-
+    toggleLeftSidenav() {
+        // document.getElementById('phview').style.overflow='hidden'
+      this.$refs.leftSidenav.toggle();
+    },
+    closeLeftSidenav() {
+      this.$refs.leftSidenav.close();
+    }
   },
 };
 </script>
@@ -98,14 +85,14 @@ export default {
   left:0;
   width:100vw;
   height:100vh;
-  overflow-x: hidden;
+  overflow: hidden;
 }
 .top-nav{
   position:fixed;
   top:0;
   left:0;
   width:100vw;
-  z-index:100;
+  z-index:1;
   background-color:#03A9F4 !important;
         /*background-image: linear-gradient(180deg, hsl(200, 81%, 30%) 0%, #2AF598 100%) !important;*/
 }
@@ -120,6 +107,7 @@ export default {
 }
 .route-cont-wrap{
   width:100vw;
+  height:100vh;
   overflow-x: hidden;
 }
 .route-cont{
@@ -127,7 +115,7 @@ export default {
   margin-top:10vh;
   margin:0 auto;
   padding:20px 0;
-  overflow: hidden;
+  margin-bottom:100px
 }
 @media only screen and (max-width:7in){
   .route-cont{
