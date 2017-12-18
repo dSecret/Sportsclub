@@ -1,8 +1,8 @@
 {
-  "name": "AT-T",
-  "description": "The MeetUp project",
+  "name": "SportsClub",
+  "description": "Official website of SportsClub @nitdelhi",
   "version": "1.0.0",
-  "author": "Mub",
+  "author": "dSecret",
   "private": true,
   "scripts": {
     "dev": "cross-env NODE_ENV=development webpack-dev-server --open --hot",
@@ -10,8 +10,6 @@
     "start": "node server.js"
   },
   "dependencies": {
-    "axios": "^0.17.0",
-    "express": "^4.16.2",
     "firebase": "^4.3.0",
     "firebaseui": "^2.3.0",
     "vue": "^2.3.3",

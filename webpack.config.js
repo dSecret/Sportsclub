@@ -4,14 +4,14 @@ const CleanWebpackPlugin = require('clean-webpack-plugin');
 
 module.exports = {
   entry: './src/main.js',
-    plugins: [
+  plugins: [
      new CleanWebpackPlugin(['dist']),
-     new webpack.optimize.CommonsChunkPlugin({ name: 'vendor', filename: 'vendor.bundle.js' })
+     new webpack.optimize.CommonsChunkPlugin({ name: 'common',filename: "commons.js" })
   ],
   output: {
     path: path.resolve(__dirname, './dist'),
     publicPath: '/dist/',
-    filename: '[name].js'
+    filename: '[name].bundle.js'
   },
   module: {
     rules: [
