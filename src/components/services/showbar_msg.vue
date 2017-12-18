@@ -5,10 +5,10 @@
                     First you need to choose sport.
                 </li>
                 <li>
-                  Click on the euipments name to add them on your request cart.
+                    Click on the euipments name to add them on your request cart.
                 </li>
                 <li>
-                  In provided text-area you can add a request message. *Recommended
+                    In provided text-area you can add a request message. *Recommended
                 </li>
             </ul>
   </div>
