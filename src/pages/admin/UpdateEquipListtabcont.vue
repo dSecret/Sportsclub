@@ -14,6 +14,7 @@
                 >
                   <md-option  v-for="sport in spls"
                               :value="sport"
+                              :key="sport"
                   >       
                       {{sport}}
                   </md-option>
@@ -28,6 +29,7 @@
                   <md-option  v-for="sport in equips"
                               :value="sport.equip"
                               @selected="fetchSel(sport)"
+                              :key="sport.equip"
                   >       
                       {{sport.equip}}
                   </md-option>

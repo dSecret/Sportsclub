@@ -1,6 +1,6 @@
 <template>
   <div class="cards-cont">
-  			<md-card v-for="(post,index) in filtered" class="card" >
+  			<md-card v-for="(post,index) in filtered" :key="post.id" class="card" >
 				  <md-card-header>
 				    <div class="md-title">
 				    		<router-link :to="'/posts/'+post.id">

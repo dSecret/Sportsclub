@@ -7,7 +7,7 @@
             </md-button>
             <h2 class="md-display-1 mytitle" style="flex:1">
                   <router-link to='/' class="link-mytitle">
-                   SportsClub
+                   SportsClub {{admin}}
                    </router-link>
             </h2>
         </div>
@@ -15,7 +15,10 @@
       <md-sidenav class="md-left" 
                   ref="leftSidenav"
       >
-        <sidenavCurrUser style="z-index:100;"></sidenavCurrUser>
+        <sidenavCurrUser  style="z-index:100;" 
+                          v-on:closemenu="closeLeftSidenav()"
+        >
+        </sidenavCurrUser>
       </md-sidenav>
       <div style="height:10vh;width:100vw;" id="scrollTop">
       </div>
@@ -29,7 +32,7 @@
 
 <script>
 const  sidenavCurrUser=()=>import('./sidenavCurrUser.vue')
-import {isLoggedIn,logOut,logIn} from '../helpers/authfunc'
+import {isLoggedIn,logOut,logIn,admin} from '../helpers/authfunc'
 export default {
   components:{
       sidenavCurrUser,
@@ -41,7 +44,8 @@ export default {
       name: '',
       email: '',
       user: {},
-      logged:null
+      logged:null,
+      admin:admin()
 
     }
   },

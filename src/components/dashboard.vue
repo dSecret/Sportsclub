@@ -8,7 +8,8 @@
 					<div class="profile-info">
 							<div class="mylist-item ">{{user.name}}</div>
 							<div class="mylist-item ">{{user.email}}</div>
-							<div class="mylist-item ">+91-9795455055</div>
+							<div class="mylist-item ">+91-9795455055 {{admin}}</div>
+							<div ><md-button @click="lgOut">LogOut</md-button></div>
 
 					</div>
 				</md-whiteframe>
@@ -29,21 +30,16 @@
 <script>
 import firebase from 'firebase'
 var dtb=firebase.database()
-import {isLoggedIn,logOut} from '../helpers/authfunc'
+import {isLoggedIn,logOut,admin} from '../helpers/authfunc'
 export default {
 	data(){
 		return{
 			user: {},
-			tabLinks:[
-				{path:'/profile/home',icon:'home'},
-				{path:'/profile/event',icon:'events'},
-				{path:'/profile/about',icon:'person'},
-				{path:'/profile/settings',icon:'settings'}
-			],
 			error:false,
 			reqs:[],
 			issued:[],
-			newi:[]
+			newi:[],
+			admin:admin()
 		}
 	},
   	created() {
@@ -54,8 +50,8 @@ export default {
       				id=userinfo.email.slice(0,9)
 				dtb.ref('/users/'+id).on('value',(snap)=>{
 							if(snap.exists()){
-								this.getList(0,id,'reqs')
-								this.getList(1,id,'issued')
+								// this.getList(0,id,'reqs')
+								// this.getList(1,id,'issued')
 								return this.user=snap.val()
 							}
 							else{
@@ -74,30 +70,33 @@ export default {
 
   },
   methods:{
+  		lgOut:function(){
+  			logOut()
+  		},
   		getList:function(t,id,from){
-  				var foo
-		  		var ref=dtb.ref('activity/'+id+'/'+from)
-		          	foo=new Promise((resolve,reject)=>{
-		          		var arry=[]
-		                  ref.on("value", function(snapshot) {
-		                    if(snapshot.val()){
-		                      for (let key in snapshot.val()) {
-		                        arry.push(snapshot.val()[key])
-		                      }
-		                      resolve(arry)
-		                    }
-		                    else{
-		                      reject([])
-		                    }
-		                  });
-		          	})
-		          	foo.then((bar)=>{
-		          		if(!t)
-		              		this.reqs=bar
-		              	else
-		              		// this.getListitem(t,bar)
-		              		this.issued=bar
-		          	})
+  				// var foo
+		  		// var ref=dtb.ref('activity/'+id+'/'+from)
+		    //       	foo=new Promise((resolve,reject)=>{
+		    //       		var arry=[]
+		    //               ref.on("value", function(snapshot) {
+		    //                 if(snapshot.val()){
+		    //                   for (let key in snapshot.val()) {
+		    //                     arry.push(snapshot.val()[key])
+		    //                   }
+		    //                   resolve(arry)
+		    //                 }
+		    //                 else{
+		    //                   reject([])
+		    //                 }
+		    //               });
+		    //       	})
+		    //       	foo.then((bar)=>{
+		    //       		if(!t)
+		    //           		this.reqs=bar
+		    //           	else
+		    //           		// this.getListitem(t,bar)
+		    //           		this.issued=bar
+		    //       	})
   				
   		},
   		getListitem:function(t,bar){

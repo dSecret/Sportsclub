@@ -11,7 +11,7 @@
                       </md-table-row>
                     </md-table-header>
                     <md-table-body>
-                      <md-table-row v-for="tit in filt" v-if="reqs.length" >
+                      <md-table-row v-for="tit in filt" v-if="reqs.length" :key="tit.id" >
                         <md-table-cell>{{tit.user}}</md-table-cell>
                         <md-table-cell>{{tit.date}}</md-table-cell>
                         <md-table-cell>{{tit.status}}</md-table-cell>

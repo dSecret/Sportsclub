@@ -7,39 +7,41 @@
             	<img src="/src/assets/nitdlogo.gif" alt="People" class="logo">
             </a>
         </div>
-		<md-list-item style="background-color:#0D47A1;">
-			<router-link to="/profile" v-if="user.email">
+		<md-list-item 	style="background-color:#0D47A1;" 
+						@click="close('/profile')"
+						v-if="user.email"
+		>
 				  <span class="md-subhead" >{{user.email}}</span>
 		          <span style="flex: 1"></span>
 		          <md-avatar class="img-cont">
 		            <img :src="user.photoUrl" alt="People">
 		          </md-avatar>
-		    </router-link>
-		    <router-link to="/login" v-if="!user.email">
+		</md-list-item>
+		<md-list-item 	style="background-color:#0D47A1;" 
+						@click="close('/login')"
+						v-if="!user.email"
+		>
 				  <span class="md-subhead" >Login</span>
 		          <span style="flex: 1"></span>
 		          <md-avatar class="img-cont">
 		            <img :src="user.photoUrl" alt="People">
 		          </md-avatar>
-		    </router-link>
         </md-list-item>
       </md-list>
     </md-toolbar>
-    <md-list>
-       	<md-list-item v-for="o in options" >
-       		<router-link exact :to="o.linki">
+    <md-list >
+       	<md-list-item v-for="o in options" :key="o.tit" @click="close(o.linki)" >
         		<md-icon v-if="!o.type">{{o.ico}}</md-icon>
         		<span>{{o.tit}}</span>
-        	</router-link>
         	<md-list-expand v-if="o.type">
         		<md-list>
            		 	<md-list-item 	class=""
            		 					v-for="ex in o.expand"
+           		 					:key="ex.tit"
+           		 					@click="close(ex.linki)"
            		 	>
-           		 		<router-link exact :to="ex.linki">      
            		 			  		<md-icon>{{ex.ico}}</md-icon>
         							<span>{{ex.tit}}</span>
-        				</router-link>
            		 	</md-list-item>
         		</md-list>
         	</md-list-expand>
@@ -83,6 +85,12 @@ export default {
       		this.user=userinfo
    		 })
   	},
+  	methods:{
+  		close:function(foo){
+  			this.$router.push(foo)
+  			this.$emit('closemenu')
+  		}
+  	}
 }	
 </script>
 

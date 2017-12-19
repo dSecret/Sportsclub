@@ -11,7 +11,7 @@
                       </md-table-row>
                     </md-table-header>
                     <md-table-body>
-                      <md-table-row v-for="(tit,index) in newissued" v-if="equips.length" >
+                      <md-table-row v-for="(tit,index) in newissued" :key="index" v-if="equips.length" >
                         <md-table-cell>{{tit.user}}</md-table-cell>
                         <md-table-cell>{{tit.date}}</md-table-cell>
                         <md-table-cell>{{tit.fine}}</md-table-cell>

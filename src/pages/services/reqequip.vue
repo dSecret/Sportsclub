@@ -14,6 +14,7 @@
                                   <md-option v-for="spo in sportsname"
                                                   :value="spo"
                                                   @selected="filterCategory(spo)"
+                                                  :key="spo"
                                   >
                                                   <span style="padding:0 20px">
                                                     {{spo}}
@@ -24,7 +25,7 @@
                         </div>
                     </div>
                     <div class="container-equip" >
-                          <div  v-for="tit in filtered" class="wrap-chipedit">
+                          <div  v-for="tit in filtered" class="wrap-chipedit" :key="tit.equip">
                               <md-chip md-editable
                                         v-on:edit="additem(tit)"
                                         style="margin:5px 0;"
@@ -61,6 +62,7 @@
                                 v-for="(til,index) in selectedcart"
                                 @delete="removeitem(index)"
                                 style="margin:5px 5px;"
+                                :key="index"
                               >
                                 {{til.equip}}
                               <md-tooltip md-direction="bottom">Remove from cart</md-tooltip>

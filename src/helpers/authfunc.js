@@ -7,6 +7,19 @@ import  firebaseui from 'firebaseui'
 // app is initialized
 firebase.initializeApp(config);
 
+
+export function admin(){
+    isLoggedIn().then((userinfo)=>{
+        if(userinfo.email){
+              let email='161210004@nitdelhi.ac.in'
+              if(userinfo.email===email){
+                  return true
+              }
+        }
+        return false
+    })
+}
+
 // this func returns whether user is logged in othewise it redirects user to login page.
 export function requireauth(to, from, next){
     firebase.auth().onAuthStateChanged((user) => {

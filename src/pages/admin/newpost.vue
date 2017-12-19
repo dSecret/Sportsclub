@@ -57,6 +57,7 @@
 					<md-chip 	v-for="(form,index) in forms"
 								md-deletable
 								@delete="removeform(index)"
+								:key="form.title"
 					>
 							{{form.title}}
 					</md-chip>

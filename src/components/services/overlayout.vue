@@ -13,6 +13,7 @@
                   <md-chip  
                             style="margin:5px 3px;"
                             v-for="tit in equips"
+                            :key="tit.equip"
                   >
                                   {{tit.equip}}
                   </md-chip>
