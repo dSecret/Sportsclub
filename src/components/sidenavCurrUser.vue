@@ -30,22 +30,24 @@
       </md-list>
     </md-toolbar>
     <md-list >
-       	<md-list-item v-for="o in options" :key="o.tit" @click="close(o.linki)" >
-        		<md-icon v-if="!o.type">{{o.ico}}</md-icon>
+        <md-list-item 	v-for="o in options1" 
+        				:key="o.tit" 
+        				@click="close(o.linki)" 
+        >
+        		<md-icon >{{o.ico}}</md-icon>
         		<span>{{o.tit}}</span>
-        	<md-list-expand v-if="o.type">
-        		<md-list>
-           		 	<md-list-item 	class=""
-           		 					v-for="ex in o.expand"
-           		 					:key="ex.tit"
-           		 					@click="close(ex.linki)"
-           		 	>
-           		 			  		<md-icon>{{ex.ico}}</md-icon>
-        							<span>{{ex.tit}}</span>
-           		 	</md-list-item>
-        		</md-list>
-        	</md-list-expand>
-    </md-list-item>
+    	</md-list-item>
+    	<md-list-item class="md-inset" v-if="admin()">
+    			<span><b>Admin</b></span>
+    	</md-list-item>
+        <md-list-item 	v-for="o in options2" 
+        				:key="o.tit" 
+        				@click="close(o.linki)" 
+        				v-if="admin()"
+        >
+        		<md-icon >{{o.ico}}</md-icon>
+        		<span>{{o.tit}}</span>
+    	</md-list-item>
     </md-list>
   </div>
 </template>
@@ -56,28 +58,19 @@ export default {
 	data() {
 	    return {
 	      user: {},
-	      options:[
-	      			{tit:'Home',type:false,linki:'/',expand:[],ico:'home'},
-	      			{tit:'About',type:false,linki:'/about',ico:'book',expand:[]},
-	      			{tit:'RequestEquipments',type:false,linki:'/services/reqequip',ico:'chat',
-	      				expand:[]
-	      			},
-	      			{tit:'Gallery',type:false,linki:'/gallery',ico:'photo_album',
-	      				expand:[]
-	      			},
-	      			{tit:'Sports',type:true,linki:'/',ico:'home',
-	      				expand:[]
-	      			},
-
-	      			{tit:'Admin',type:true,linki:'/',ico:'home',
-	      				expand:[
-	      						{tit:'NewPost',linki:'/admin/newpost',ico:'create'},
-	      						{tit:'IssuedEqps',linki:'/admin/issued',ico:'list'},
-	      						{tit:'EquipRqs',linki:'/admin/equipreq',ico:'chat'},
-	      						{tit:'UpdateList',linki:'/admin/updateequipls',ico:'create'},
-	      						]
-	      			}
-	      		]
+	      options1:[
+	      			{tit:'Home',linki:'/',ico:'home'},
+	      			{tit:'About',linki:'/about',ico:'book',},
+	      			{tit:'RequestEquipments',linki:'/services/reqequip',ico:'chat'},
+	      			{tit:'Club',linki:'*',ico:'book',},
+	      			{tit:'Gallery',linki:'*',ico:'book',},
+	      		],
+	      options2:[
+	      			{tit:'NewPost',linki:'/admin/newpost',ico:'create'},
+	      			{tit:'IssuedEqps',linki:'/admin/issued',ico:'list'},
+	      			{tit:'EquipRqs',linki:'/admin/equipreq',ico:'chat'},
+	      			{tit:'UpdateList',linki:'/admin/updateequipls',ico:'create'}
+	      		]	      		
 	    }
  	},
  	created() {
@@ -89,6 +82,20 @@ export default {
   		close:function(foo){
   			this.$router.push(foo)
   			this.$emit('closemenu')
+  		},
+  		admin:function(){
+	          if(this.user.email){
+	                  let email='161210004@nitdelhi.ac.in'
+	                  if(this.user.email===email){
+	                      return true
+	                  }
+	                  else{
+	                    return false
+	                  }
+	          }
+	          else{
+	                  return false
+	          }
   		}
   	}
 }	

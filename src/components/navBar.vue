@@ -7,7 +7,7 @@
             </md-button>
             <h2 class="md-display-1 mytitle" style="flex:1">
                   <router-link to='/' class="link-mytitle">
-                   SportsClub {{admin}}
+                   SportsClub
                    </router-link>
             </h2>
         </div>
@@ -24,7 +24,9 @@
       </div>
       <div class="route-cont-wrap">
           <div class="route-cont">
-            <router-view></router-view>
+            <transition name="fade">
+              <router-view></router-view>
+            </transition>
           </div>
       </div>
   </div>
@@ -32,7 +34,7 @@
 
 <script>
 const  sidenavCurrUser=()=>import('./sidenavCurrUser.vue')
-import {isLoggedIn,logOut,logIn,admin} from '../helpers/authfunc'
+import {isLoggedIn,logOut,logIn} from '../helpers/authfunc'
 export default {
   components:{
       sidenavCurrUser,
@@ -45,8 +47,6 @@ export default {
       email: '',
       user: {},
       logged:null,
-      admin:admin()
-
     }
   },
   computed:{
@@ -76,6 +76,13 @@ export default {
 </script>
 
 <style scoped>
+.fade-enter-active, .fade-leave-active {
+  transition:0.5s;
+  transform: translateX(-100vw);
+}
+.fade-enter, .fade-leave-to /* .fade-leave-active below version 2.1.8 */ {
+  transform: translateX(100vw);
+}
 .img-cont{
   background-color: white;
   /*padding:2px;*/

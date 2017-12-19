@@ -1,17 +1,22 @@
 <template>
 	<div >
-			<div v-if="!error">
+			<div v-if="!errorr">
 				<md-whiteframe md-elevation="4" class="wrap-dp">
 					<div class="cont-dp">
 						<img class="dp" :src="user.photoUrl"/>
 					</div>
-					<div class="profile-info">
+					<div class="profile-info" v-if="user.email">
 							<div class="mylist-item ">{{user.name}}</div>
 							<div class="mylist-item ">{{user.email}}</div>
-							<div class="mylist-item ">+91-9795455055 {{admin}}</div>
+							<div class="mylist-item ">+91-9795455055 </div>
 							<div ><md-button @click="lgOut">LogOut</md-button></div>
-
+							<md-spinner md-indeterminate 
+										class="md-accent" 
+										v-if="!user.email"
+							>
+							</md-spinner>
 					</div>
+							
 				</md-whiteframe>
 				<md-whiteframe md-elevation="2" class="cont-list">
 						{{reqs}}
@@ -20,7 +25,7 @@
 						{{issued}}
 				</md-whiteframe>
 			</div>
-			<div v-if="error">
+			<div v-if="errorr">
 					Trying logging with account which matches with @nitdelhi.ac.in
 			</div>
 	</div>
@@ -30,16 +35,15 @@
 <script>
 import firebase from 'firebase'
 var dtb=firebase.database()
-import {isLoggedIn,logOut,admin} from '../helpers/authfunc'
+import {isLoggedIn,logOut} from '../helpers/authfunc'
 export default {
 	data(){
 		return{
 			user: {},
-			error:false,
+			errorr:false,
 			reqs:[],
 			issued:[],
 			newi:[],
-			admin:admin()
 		}
 	},
   	created() {
@@ -48,24 +52,34 @@ export default {
     	isLoggedIn().then(userinfo => {
       		// this.user=userinfo
       				id=userinfo.email.slice(0,9)
-				dtb.ref('/users/'+id).on('value',(snap)=>{
-							if(snap.exists()){
-								// this.getList(0,id,'reqs')
-								// this.getList(1,id,'issued')
-								return this.user=snap.val()
-							}
-							else{
-								let foo=userinfo.email.includes('nitdelhi.ac.in')
-								if(foo){
-									// err=true
-									return dtb.ref('users/'+ id).set(userinfo)
+				let foo=userinfo.email.includes('nitdelhi.ac.in')
+				if(foo){
+					dtb.ref('/users/'+id).on('value',(snap)=>{
+								if(snap.exists()){
+									// this.getList(0,id,'reqs')
+									// this.getList(1,id,'issued')
+									return this.user=snap.val()
 								}
 								else{
-									return logOut()
-									// this.$router.push('/')
+									 	dtb.ref('users/'+ id).set(userinfo)
+									 	dtb.ref('/users/'+id).on('value',(snap)=>{
+											if(snap.exists()){
+												// this.getList(0,id,'reqs')
+												// this.getList(1,id,'issued')
+												return this.user=snap.val()
+											}
+											else{
+												return logOut()
+											}
+										})
 								}
-							}
-				})
+					})					
+						
+				}
+				else{
+					return logOut()
+				}
+
     	})
 
   },
@@ -132,8 +146,8 @@ export default {
 	margin-top:50px;
 	padding-top:80px;
 	min-height:170px;
-	background-color:lightgrey;
-	background:url('~/src/assets/football3.jpg') 0 0/100% 100% no-repeat; 
+	background-color: #0f628b;
+    background-image: linear-gradient(180deg, hsl(200, 81%, 30%) 0%, #2AF598 100%);
 
 }
 .cont-dp{
@@ -147,6 +161,8 @@ export default {
 	box-sizing: border-box;
 	-moz-box-sizing: border-box;
 	overflow: hidden;
+	background-color:lightgrey;
+
 }
 .dp{
 	width:100%;

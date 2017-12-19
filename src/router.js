@@ -1,6 +1,6 @@
 import VueRouter from 'vue-router';
 const Auth=()=> import('./components/Auth.vue')
-
+const PNF=()=> import('./components/PNF.vue')
 
 // home route
 const home =()=> import('./pages/home/home.vue')
@@ -20,7 +20,7 @@ const services =()=> import('./pages/services/services.vue')
 	const issued=()=>import('./pages/services/issued.vue')
 
 // authfunctions
-import {requireauth,authenticated} from './helpers/authfunc'
+import {requireauth,authenticated,checkadmin} from './helpers/authfunc'
 
 
 const router = new VueRouter({
@@ -28,10 +28,10 @@ const router = new VueRouter({
   routes: [
     { path: '/', component: home },
     {path:'/posts/:id',component:openpost},
-    { path: '*', component: home },
+    { path: '*', component: PNF },
     { path: '/login', component: Auth,beforeEnter:authenticated},
     { path: '/prot', component: Auth,beforeEnter:requireauth},
-    { path: '/profile', component: profile,
+    { path: '/profile', component: profile,beforeEnter:requireauth,
 	  children:[
 		{path:'home',component:profileHome},
 		{path:'events',component:profileEvents},
@@ -39,7 +39,7 @@ const router = new VueRouter({
 		{path:'settings',component:profileSettings},
 	  ]
 	},
-	{path:'/admin',component:admin,
+	{path:'/admin',component:admin,beforeEnter:checkadmin,
 		children:[
 			{path:'updateequipls',component:upequipls},
 			{path:'equipreq',component:equipreq},
