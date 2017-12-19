@@ -31,7 +31,7 @@ const router = new VueRouter({
     { path: '*', component: home },
     { path: '/login', component: Auth,beforeEnter:authenticated},
     { path: '/prot', component: Auth,beforeEnter:requireauth},
-    { path: '/profile', component: profile,
+    { path: '/profile', component: profile,beforeEnter:requireauth,
 	  children:[
 		{path:'home',component:profileHome},
 		{path:'events',component:profileEvents},
