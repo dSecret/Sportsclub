@@ -23,4 +23,19 @@ http://localhost:8080
 http://localhost:8888
 ```
 
+```bash
+#/src/helpers
+##firebaseConfig.js
+It contains the web config obtained after setting up a firebase project.
+It is used to connect our SPA with our Firebase project.
+
+##authfunc.js
+It contains some custom functions over firebase.auth() services.
+We can import these functions in other modules as per as it is required.
+
+
+```
+
+
+
 For detailed explanation on how things work, consult the [docs for vue-loader](http://vuejs.github.io/vue-loader).
