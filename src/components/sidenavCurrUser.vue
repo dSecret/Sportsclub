@@ -1,34 +1,100 @@
 <template>
-  <div style="width:100%;">
-		<div class="comp-logo-cont">
-				<img class="comp-logo"
-					 src="/src/assets/logo.png"/>
-		</div>
-		<div align="right">
-			<span style="flex:1"></span>
-			<md-button>LogOut</md-button>
-			
-			<md-avatar class="md-medium" style="background-color:white;">
-			  <img src="/src/assets/logo.png" alt="People">
-			</md-avatar>
-		</div>
+  <div style="width:100%;margin-bottom:30px;">
+	<md-toolbar class="md-account-header" style="background-color:#2962FF;">
+      <md-list class="md-transparent">
+      	<div align="center">
+      		<a href="http://nitdelhi.ac.in">
+            	<img src="/src/assets/nitdlogo.gif" alt="People" class="logo">
+            </a>
+        </div>
+		<md-list-item style="background-color:#0D47A1;">
+			<router-link to="/profile" v-if="user.email">
+				  <span class="md-subhead" >{{user.email}}</span>
+		          <span style="flex: 1"></span>
+		          <md-avatar class="img-cont">
+		            <img :src="user.photoUrl" alt="People">
+		          </md-avatar>
+		    </router-link>
+		    <router-link to="/login" v-if="!user.email">
+				  <span class="md-subhead" >Login</span>
+		          <span style="flex: 1"></span>
+		          <md-avatar class="img-cont">
+		            <img :src="user.photoUrl" alt="People">
+		          </md-avatar>
+		    </router-link>
+        </md-list-item>
+      </md-list>
+    </md-toolbar>
+    <md-list>
+       	<md-list-item v-for="o in options" >
+       		<router-link exact :to="o.linki">
+        		<md-icon v-if="!o.type">{{o.ico}}</md-icon>
+        		<span>{{o.tit}}</span>
+        	</router-link>
+        	<md-list-expand v-if="o.type">
+        		<md-list>
+           		 	<md-list-item 	class=""
+           		 					v-for="ex in o.expand"
+           		 	>
+           		 		<router-link exact :to="ex.linki">      
+           		 			  		<md-icon>{{ex.ico}}</md-icon>
+        							<span>{{ex.tit}}</span>
+        				</router-link>
+           		 	</md-list-item>
+        		</md-list>
+        	</md-list-expand>
+    </md-list-item>
+    </md-list>
   </div>
 </template>
 
 <script>
+import {isLoggedIn,logOut,logIn} from '../helpers/authfunc'
 export default {
+	data() {
+	    return {
+	      user: {},
+	      options:[
+	      			{tit:'Home',type:false,linki:'/',expand:[],ico:'home'},
+	      			{tit:'About',type:false,linki:'/about',ico:'book',expand:[]},
+	      			{tit:'RequestEquipments',type:false,linki:'/services/reqequip',ico:'chat',
+	      				expand:[]
+	      			},
+	      			{tit:'Gallery',type:false,linki:'/gallery',ico:'photo_album',
+	      				expand:[]
+	      			},
+	      			{tit:'Sports',type:true,linki:'/',ico:'home',
+	      				expand:[]
+	      			},
 
-}
+	      			{tit:'Admin',type:true,linki:'/',ico:'home',
+	      				expand:[
+	      						{tit:'NewPost',linki:'/admin/newpost',ico:'create'},
+	      						{tit:'IssuedEqps',linki:'/admin/issued',ico:'list'},
+	      						{tit:'EquipRqs',linki:'/admin/equipreq',ico:'chat'},
+	      						{tit:'UpdateList',linki:'/admin/updateequipls',ico:'create'},
+	      						]
+	      			}
+	      		]
+	    }
+ 	},
+ 	created() {
+       isLoggedIn().then(userinfo => {
+      		this.user=userinfo
+   		 })
+  	},
+}	
 </script>
 
-<style>
-.comp-logo-cont{
-	width:100%;
-	padding-top:70px;
-	text-align: center;
+<style >
+.logo{
+	border-radius:50%;
+	height:90px;
+	width:90px;
+	margin:10px;
 }
-.comp-logo{
-	width:70px;
-	height:70px;
+.img-cont{
+  background-color: white;
+  border:2px solid white;
 }
 </style>

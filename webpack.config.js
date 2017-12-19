@@ -1,17 +1,30 @@
 var path = require('path')
 var webpack = require('webpack')
 const CleanWebpackPlugin = require('clean-webpack-plugin');
+var BundleAnalyzerPlugin = require('webpack-bundle-analyzer').BundleAnalyzerPlugin;
 
 module.exports = {
   entry: './src/main.js',
-    plugins: [
+  plugins: [
      new CleanWebpackPlugin(['dist']),
-     new webpack.optimize.CommonsChunkPlugin({ name: 'vendor', filename: 'vendor.bundle.js' })
+     new webpack.optimize.CommonsChunkPlugin({ name: 'common',filename: "commons.js" }),
+     new BundleAnalyzerPlugin({
+            analyzerMode: 'server',
+            analyzerHost: '127.0.0.1',
+            analyzerPort: 8888,
+            reportFilename: 'report.html',
+            defaultSizes: 'parsed',
+            openAnalyzer: true,
+            generateStatsFile: false,
+            statsFilename: 'stats.json',
+            statsOptions: null,
+            logLevel: 'info'
+     })
   ],
   output: {
     path: path.resolve(__dirname, './dist'),
     publicPath: '/dist/',
-    filename: '[name].js'
+    filename: '[name].bundle.js'
   },
   module: {
     rules: [
