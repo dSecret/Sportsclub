@@ -50,19 +50,25 @@ export default {
     }
   },
   computed:{
-    
+      
   },
   created() {
-       isLoggedIn().then(userinfo => {
-      this.user=userinfo
-    })
+    //   this.$store.dispatch('getUser','hellodSecret').then(userinfo => {
+    //      this.user=userinfo
+    //     console.log(userinfo)
+    // })
+          // this.$store.dispatch('getUser','hellodSecret')
+          // console.log(this.$store.state.user.email)
+          // this.$store.state.user.then(u=>{
+          //     console.log(u)
+          // })
   },
   methods: {
     logOut() {
-      logOut()
+        logOut()
     },
     logIn(){
-      logIn()
+        // return this.$store.dispatch('logIn','hellodSecret')
     },
     toggleLeftSidenav() {
         // document.getElementById('phview').style.overflow='hidden'
@@ -72,7 +78,7 @@ export default {
       this.$refs.leftSidenav.close();
     }
   },
-};
+}
 </script>
 
 <style scoped>

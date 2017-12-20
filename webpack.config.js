@@ -8,18 +8,18 @@ module.exports = {
   plugins: [
      new CleanWebpackPlugin(['dist']),
      new webpack.optimize.CommonsChunkPlugin({ name: 'common',filename: "commons.js" }),
-     new BundleAnalyzerPlugin({
-            analyzerMode: 'server',
-            analyzerHost: '127.0.0.1',
-            analyzerPort: 8888,
-            reportFilename: 'report.html',
-            defaultSizes: 'parsed',
-            openAnalyzer: true,
-            generateStatsFile: false,
-            statsFilename: 'stats.json',
-            statsOptions: null,
-            logLevel: 'info'
-     })
+     // new BundleAnalyzerPlugin({
+     //        analyzerMode: 'disabled',
+     //        analyzerHost: '127.0.0.1',
+     //        analyzerPort: 8880,
+     //        reportFilename: 'report.html',
+     //        defaultSizes: 'parsed',
+     //        openAnalyzer: false,
+     //        generateStatsFile: false,
+     //        statsFilename: 'stats.json',
+     //        statsOptions: null,
+     //        logLevel: 'info'
+     // })
   ],
   output: {
     path: path.resolve(__dirname, './dist'),
@@ -65,11 +65,11 @@ module.exports = {
   performance: {
     hints: false
   },
-  devtool: '#eval-source-map'
+  // devtool: '#eval-source-map'
 }
 
 if (process.env.NODE_ENV === 'production') {
-  module.exports.devtool = '#source-map'
+  // module.exports.devtool = '#source-map'
   // http://vue-loader.vuejs.org/en/workflow/production.html
   module.exports.plugins = (module.exports.plugins || []).concat([
     new webpack.DefinePlugin({
@@ -78,7 +78,7 @@ if (process.env.NODE_ENV === 'production') {
       }
     }),
     new webpack.optimize.UglifyJsPlugin({
-      sourceMap: true,
+      // sourceMap: true,
       compress: {
         warnings: false
       }

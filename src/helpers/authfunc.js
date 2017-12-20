@@ -1,13 +1,16 @@
+// import firebase from '@firebase/app';
+// import '@firebase/database'
+// import '@firebase/storage'
+// import '@firebase/auth'
+// // importing config keys to connect our SPA with firebase app.
 import firebase from 'firebase'
-
-// importing config keys to connect our SPA with firebase app.
 import  {config} from './firebaseConfig'
 import  firebaseui from 'firebaseui'
 
-// app is initialized
+// // app is initialized
 firebase.initializeApp(config);
 
-
+var dtb=firebase.database()
 export function checkadmin(to, from, next){
     firebase.auth().onAuthStateChanged((user) => {
           if(user.email){
@@ -69,6 +72,16 @@ export function isLoggedIn(){
           }
        })
     })
+      // return new Promise((resolve, reject) => {
+      //     dtb.ref('/likes').on("value",(snap)=>{
+      //         if(snap.val()){ 
+      //              resolve(snap.val())
+      //           }
+      //          else{
+      //             reject(10)
+      //          }
+      //   })
+      //   })
     
 }
 // to call logOut

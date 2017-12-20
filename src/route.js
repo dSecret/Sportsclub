@@ -1,8 +1,9 @@
 const Auth=()=> import('./components/Auth.vue')
 const PNF=()=> import('./components/PNF.vue')
 
-// home route
+// // home route
 const home =()=> import('./pages/home/home.vue')
+// import home from './pages/home/home.vue'
 const openpost=()=>import('./components/openpost.vue')
 
 const profile =()=> import('./pages/profile/profile.vue');
@@ -18,7 +19,7 @@ const services =()=> import('./pages/services/services.vue')
 	const reqequip =()=> import('./pages/services/reqequip.vue')
 	const issued=()=>import('./pages/services/issued.vue')
 
-// authfunctions
+// // authfunctions
 import {requireauth,authenticated,checkadmin} from './helpers/authfunc'
 
 
