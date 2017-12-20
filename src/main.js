@@ -1,16 +1,16 @@
 import Vue from 'vue'
 const App =()=>import('./App.vue') 
 import VueRouter from 'vue-router'
-import Routes from './route.js'
+import Routes from './router.js'
 import VueMaterial from 'vue-material'
-import {store} from './store/store.js'
+// import {store} from './store/store.js'
 // import 'vue-material/dist/vue-material.min.css'
 
 Vue.use(VueRouter)
 
 const router =new VueRouter({
   routes:Routes,
-  /*mode:'history'*/
+  mode:'history'
 });
 
 Vue.use(VueMaterial)
@@ -40,9 +40,9 @@ Vue.material.registerTheme({
 
 new Vue({
   router,
-  store:store,
+  // store:store,
   created() {
-        console.log(this.$store.state.name)
+        // console.log(this.$store.state.name)
     },
   el: '#app',
   render: h => h(App)
