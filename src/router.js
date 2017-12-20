@@ -1,4 +1,3 @@
-import VueRouter from 'vue-router';
 const Auth=()=> import('./components/Auth.vue')
 const PNF=()=> import('./components/PNF.vue')
 
@@ -23,14 +22,11 @@ const services =()=> import('./pages/services/services.vue')
 import {requireauth,authenticated,checkadmin} from './helpers/authfunc'
 
 
-const router = new VueRouter({
-  mode: 'history',
-  routes: [
+export default [
     { path: '/', component: home },
     {path:'/posts/:id',component:openpost},
     { path: '*', component: PNF },
     { path: '/login', component: Auth,beforeEnter:authenticated},
-    { path: '/prot', component: Auth,beforeEnter:requireauth},
     { path: '/profile', component: profile,beforeEnter:requireauth,
 	  children:[
 		{path:'home',component:profileHome},
@@ -54,7 +50,6 @@ const router = new VueRouter({
 		]
 	}
   ]
-});
 
 
 
@@ -63,4 +58,3 @@ const router = new VueRouter({
 
 
 
-export default router;
