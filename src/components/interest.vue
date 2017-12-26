@@ -10,6 +10,12 @@
             				</md-input-container>
 			      </md-card-content>
 			    </md-card>
+          <md-whiteframe md-elevation="2" 
+                        style="padding:10px 20px;margin-bottom:10px;z-index:0;"
+                        v-if="searchInput"
+          >
+              <span class="md-title">Showing results for  " {{searchInput}} "</span>
+          </md-whiteframe>
 				<cards :search="searchInput"></cards>
   </div>
 </template>

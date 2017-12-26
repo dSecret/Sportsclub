@@ -5,11 +5,18 @@
   <!--This inner-div will be replaced by <sidebar></sidebar>-->
                     <div class="container-select">
                         <div >
-                          <md-input-container style="width:70%;">
+                          <md-spinner :md-size="40" 
+                                       md-indeterminate 
+                                       class="md-warn"
+                                       v-if="!equipnames.length"
+                          >
+                          </md-spinner>
+                          <md-input-container style="width:70%;"  v-if="equipnames.length">
                               <label for="sports">Choose</label>
                               <md-select name="sports"
                                           id="sportsitemlist"
                                           v-model="selected"
+
                               >
                                   <md-option v-for="spo in sportsname"
                                                   :value="spo"
@@ -29,16 +36,12 @@
                               <md-chip md-editable
                                         v-on:edit="additem(tit)"
                                         style="margin:5px 0;"
+                                        :disabled="tit.rem===0"
                                         >
                                   {{tit.equip}}
-                                  <!--{{tit.remain}}/{{tit.total}}-->
+                                  {{tit.rem}}/{{tit.total}}
                               </md-chip>
-                              <!--<div @click="additem" class="con-equipname">{{tit.equipname}}</div>
-                              <div class="con-equipavail">{{tit.remain}}/{{tit.total}}</div>
-                            -->
-                            
                           </div>
-                          <!-- {{sportsname}} -->
                     </div>
       </div>
       <div class="showbar common">
@@ -48,6 +51,9 @@
             <div class="showbar-selected">
   <!--This inner-div will be replaced by <showbar_selected></showbar_selected>-->
                 <div style="width:100%;padding:02% 02%;">
+                        <span style="color:red;" class="md-title">
+                            {{err}}
+                        </span>                  
                   <transition name="fade" mode="out-in">
                     <div v-if="show" key="save">
                         <span class="error-msg-span">
@@ -63,6 +69,7 @@
                                 @delete="removeitem(index)"
                                 style="margin:5px 5px;"
                                 :key="index"
+                                class="md-accent"
                               >
                                 {{til.equip}}
                               <md-tooltip md-direction="bottom">Remove from cart</md-tooltip>
@@ -99,6 +106,7 @@ components:{
 },
   data () {
     return {
+      err:'required cannt be empty',
       test:true,
       show:false,
       truee:'',

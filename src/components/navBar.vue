@@ -22,7 +22,7 @@
       </md-sidenav>
       <div style="height:10vh;width:100vw;" id="scrollTop">
       </div>
-      <div class="route-cont-wrap">
+      <div class="route-cont-wrap" id="scrolldivover">
           <div class="route-cont">
             <transition name="fade">
               <router-view></router-view>
@@ -118,7 +118,7 @@ export default {
 }
 .route-cont-wrap{
   width:100vw;
-  height:100vh;
+  height:90vh;
   overflow-x: hidden;
 }
 .route-cont{

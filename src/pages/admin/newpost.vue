@@ -150,46 +150,62 @@ export default {
 						uploadTask.cancel()
 		},
 		postnow:function(){
-				var c={id:'',title:'',body:'',banner:'',date:'',forms:[]}
+				var c={id:'',title:'',body:'',banner:'',date:'',forms:[{title:'',linki:''}]}
 				var b=this.postobj
 					this.progress=0;
 				if(b.title!='' && b.body!=''){
 						this.postcount=true;
 						b.date=new Date()
 						// to have a node of form there must be atleast one elem in forms
-						this.forms.push({title:'',linki:''})
 						b.forms=this.forms
 					var foo=this.addImg()
-					var metadata = {contentType: 'image/jpeg'}	
-					var downloadURL	
-						uploadTask = st.ref('images/'+foo.name).put(foo.file)
-						uploadTask.on('state_changed',(snapshot)=>{
-				  			var progress = (snapshot.bytesTransferred / snapshot.totalBytes) * 100
-								this.progress=progress
-				  			// console.log('Upload is ' + progress + '% done');
 
-				  			switch (snapshot.state) {
-				    			case firebase.storage.TaskState.PAUSED:
-				      					console.log('Upload is paused');
-				      			break;
-				    			case firebase.storage.TaskState.RUNNING:
-				      					// console.log('Upload is running');
-				      			break;
-				  			}
-					}, (error)=>{
-							this.cancelcount=!this.cancelcount
-							this.neterr=error
-							console.log(error)
-					}, ()=> {
-				  			downloadURL = uploadTask.snapshot.downloadURL;
-				  			b.banner=downloadURL;
-				  		var newPostKey = dtb.ref('/newposts').push().key;
-				  			b.id=newPostKey
-				  			dtb.ref('/newposts/'+b.id).update(b)
-				  		var like={id:b.id,user:['1']}
-				  			dtb.ref('/likes/'+b.id).update(like)
-				  			this.postobj=c;
-					});
+					// check if there is banner
+					if(foo.stat){
+						var metadata = {contentType: 'image/jpeg'}	
+						var downloadURL	
+							uploadTask = st.ref('images/'+foo.name).put(foo.file)
+							uploadTask.on('state_changed',(snapshot)=>{
+					  			var progress = (snapshot.bytesTransferred / snapshot.totalBytes) * 100
+									this.progress=progress
+					  			// console.log('Upload is ' + progress + '% done');
+
+					  			switch (snapshot.state) {
+					    			case firebase.storage.TaskState.PAUSED:
+					      					console.log('Upload is paused');
+					      			break;
+					    			case firebase.storage.TaskState.RUNNING:
+					      					// console.log('Upload is running');
+					      			break;
+					  			}
+						}, (error)=>{
+								this.cancelcount=!this.cancelcount
+								this.neterr=error
+								console.log(error)
+						}, ()=> {
+					  			downloadURL = uploadTask.snapshot.downloadURL;
+					  			b.banner=downloadURL;
+					  		var newPostKey = dtb.ref('/newposts').push().key;
+					  			b.id=newPostKey
+					  			dtb.ref('/newposts/'+b.id).update(b)
+					  		var like={id:b.id,user:['1']}
+					  			dtb.ref('/likes/'+b.id).update(like)
+					  			this.postobj=c;
+						});						
+					}
+					else{	
+							window.setTimeout(()=>{
+								this.progress=100
+							},3000)
+								b.banner='';
+					  		var newPostKey = dtb.ref('/newposts').push().key;
+					  			b.id=newPostKey
+					  			dtb.ref('/newposts/'+b.id).update(b)
+					  		var like={id:b.id,user:['1']}
+					  			dtb.ref('/likes/'+b.id).update(like)
+					  			this.postobj=c;
+					}
+
 				}				
 				else{
 					return this.err="required fields can't be empty"
@@ -221,8 +237,12 @@ export default {
 		},
 		addImg:function(){
 				var file=document.getElementById('ban').files
-				var	foo=new File(file,file[0].name)
-				return {file:foo,name:file[0].name}
+				if(file[0]){
+					var	foo=new File(file,file[0].name)
+					return {file:foo,name:file[0].name,stat:true}
+				}
+				else
+					return {stat:false}
 		}
 	}
 }

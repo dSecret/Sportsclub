@@ -4,16 +4,14 @@
 				  <md-card-header>
 				    <div class="md-title">
 				    		<router-link :to="'/posts/'+post.id">
-				    				{{post.title}}
+				    				{{post.title}} 
 				    		</router-link>
 				    </div>
 				    <div class="md-subhead">{{post.date}}</div>
 				  </md-card-header>
-
-				  <md-card-media align="center" style="backgound-color:black">
+				  <md-card-media v-if="post.banner" align="center" style="backgound-color:black">
 				    <img :src="post.banner" class="banner"alt="People">
 				  </md-card-media>
-
 				  <md-card-content>
 				    {{post.body}}
 				  </md-card-content>
@@ -39,7 +37,7 @@
 			</md-card>
 	
 			<!-- scroll to top button -->
-			<a href="#scrollTop" style="z-index:0;">
+			<a href="#scrolldivover" style="z-index:0;">
 		         <md-button class="md-fab md-medium md-accent locate"
 							style="background-color:#F48FB1;"
 		         >
@@ -62,34 +60,23 @@ export default {
 			posts:[],
 			user:{},
 			likes:[{id:'',user:[]}],
-			usr:''
+			usr:'',
+		}
+	},
+	computed:{
+		checkLikeCom:function(index){
+
 		}
 	},
 	created(){
-        	var arry=[]
-        	var arry1=[]
-        	dtb.ref('/likes').on("value",(snap)=>{
-							arry1=[]
-							for (let key in snap.val()) {
-						        arry1.push(snap.val()[key])
-						      }
-						    this.likes=arry1
-				})
-        	var foo=new Promise(res=>{
-					dtb.ref('/newposts').on("value",(snap)=>{
-							arry=[]
-							for (let key in snap.val()) {
-						        arry.push(snap.val()[key])
-						      }
-						    res(arry)
-					})
-				})
-        		foo.then((res)=>{
+        		// fetch likes of corresponding posts
+        		this.fetchLikes()
+        		// fetch posts
+        		this.fetchPosts().then((res)=>{
 						if(res){
 							this.posts=res
 						}
 				})
-
 				isLoggedIn().then(userinfo => {
       				this.usr=userinfo.email.slice(0,9)
     			})
@@ -120,11 +107,34 @@ export default {
 		checkLike:function(index){
 				if(this.usr){
 					return this.likes[index].user.includes(this.usr)
-					// return false
 				}
 				else return false
+		},
+		fetchLikes:function(){
+        	var arry1=[]
+        	dtb.ref('/likes').on("value",(snap)=>{
+						arry1=[]
+						if(snap.val()){
+							let arrayOfkeys = Object.keys(snap.val()).sort().reverse();
+								arry1 = arrayOfkeys.map(key => snap.val()[key])
+						}
+						return this.likes=arry1	
+			})			
+		},
+		fetchPosts:function(){
+			var arry=[]
+        	return new Promise(res=>{
+					dtb.ref('/newposts').on("value",(snap)=>{
+						if(snap.val()){
+							let arrayOfkeys = Object.keys(snap.val()).sort().reverse();
+								arry = arrayOfkeys.map(key => snap.val()[key])
+							res(arry)	
+						}
+
+					})
+				})			
 		}
-	}
+}
 }
 </script>
 

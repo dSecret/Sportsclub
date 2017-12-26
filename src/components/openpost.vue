@@ -7,7 +7,7 @@
 				    <div class="md-subhead">{{p.date}}</div>
 				  </md-card-header>
 
-				  <md-card-media align="center" style="backgound-color:black">
+				  <md-card-media align="center" v-if="p.banner"style="backgound-color:black">
 				    <img :src="p.banner" class="banner"alt="People">
 				  </md-card-media>
 

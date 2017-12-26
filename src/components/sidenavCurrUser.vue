@@ -1,10 +1,11 @@
 <template>
-  <div style="width:100%;margin-bottom:30px;">
+  <div style="width:100%;height:100vh;overflow:hidden;">
 	<md-toolbar class="md-account-header" style="background-color:#2962FF;">
       <md-list class="md-transparent">
       	<div align="center">
       		<a href="http://nitdelhi.ac.in">
-            	<img src="/src/assets/nitdlogo.gif" alt="People" class="logo">
+            	<img src="/src/assets/nitdlogo.gif" 
+            	alt="People" class="logo">
             </a>
         </div>
 		<md-list-item 	style="background-color:#0D47A1;" 
@@ -29,26 +30,28 @@
         </md-list-item>
       </md-list>
     </md-toolbar>
-    <md-list >
-        <md-list-item 	v-for="o in options1" 
-        				:key="o.tit" 
-        				@click="close(o.linki)" 
-        >
-        		<md-icon >{{o.ico}}</md-icon>
-        		<span>{{o.tit}}</span>
-    	</md-list-item>
-    	<md-list-item class="md-inset" v-if="admin()">
-    			<span><b>Admin</b></span>
-    	</md-list-item>
-        <md-list-item 	v-for="o in options2" 
-        				:key="o.tit" 
-        				@click="close(o.linki)" 
-        				v-if="admin()"
-        >
-        		<md-icon >{{o.ico}}</md-icon>
-        		<span>{{o.tit}}</span>
-    	</md-list-item>
-    </md-list>
+    <div class="option-wrap">
+	    <md-list >
+	        <md-list-item 	v-for="o in options1" 
+	        				:key="o.tit" 
+	        				@click="close(o.linki)" 
+	        >
+	        		<md-icon >{{o.ico}}</md-icon>
+	        		<span>{{o.tit}}</span>
+	    	</md-list-item>
+	    	<md-list-item class="md-inset" v-if="admin()">
+	    			<span><b>Admin</b></span>
+	    	</md-list-item>
+	        <md-list-item 	v-for="o in options2" 
+	        				:key="o.tit" 
+	        				@click="close(o.linki)" 
+	        				v-if="admin()"
+	        >
+	        		<md-icon >{{o.ico}}</md-icon>
+	        		<span>{{o.tit}}</span>
+	    	</md-list-item>
+	    </md-list>
+	</div>
   </div>
 </template>
 
@@ -111,5 +114,9 @@ export default {
 .img-cont{
   background-color: white;
   border:2px solid white;
+}
+.option-wrap{
+	height:70vh;
+	overflow-x:hidden;
 }
 </style>
