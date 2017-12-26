@@ -1,96 +1,101 @@
 <template>
   <div class="wrap">
-        <!--the container is divided two half one sidebar and other showbar-->
-      <div class="sidebar common">
-  <!--This inner-div will be replaced by <sidebar></sidebar>-->
-                    <div class="container-select">
-                        <div >
-                          <md-spinner :md-size="40" 
-                                       md-indeterminate 
-                                       class="md-warn"
-                                       v-if="!equipnames.length"
-                          >
-                          </md-spinner>
-                          <md-input-container style="width:70%;"  v-if="equipnames.length">
-                              <label for="sports">Choose</label>
-                              <md-select name="sports"
-                                          id="sportsitemlist"
-                                          v-model="selected"
+      <md-whiteframe md-elevation="1" style="padding:10px;">
+          <msg></msg>
+      </md-whiteframe>
+      <md-whiteframe md-elevation="1" style="padding:10px;margin-top:20px;">
+          <div>
+              <md-input-container style="width:40%;"  >
+                  <label for="sports">ChooseSport</label>
+                      <md-select  name="sports"
+                                  id="sportsitemlist"
+                                  v-model="selected"
 
-                              >
-                                  <md-option v-for="spo in sportsname"
-                                                  :value="spo"
-                                                  @selected="filterCategory(spo)"
-                                                  :key="spo"
-                                  >
-                                                  <span style="padding:0 20px">
+                      >
+                          <md-option  v-for="spo in sportsname"
+                                      :value="spo"
+                                      @selected="filterCategory(spo)"
+                                      :key="spo"
+                                      v-if="equipnames.length"
+                          >
+                                <span style="padding:0 20px">
                                                     {{spo}}
-                                                  </span>
-                                  </md-option>
-                              </md-select>
-                            </md-input-container>
-                        </div>
-                    </div>
-                    <div class="container-equip" >
-                          <div  v-for="tit in filtered" class="wrap-chipedit" :key="tit.equip">
-                              <md-chip md-editable
-                                        v-on:edit="additem(tit)"
-                                        style="margin:5px 0;"
-                                        :disabled="tit.rem===0"
-                                        >
-                                  {{tit.equip}}
-                                  {{tit.rem}}/{{tit.total}}
-                              </md-chip>
-                          </div>
-                    </div>
-      </div>
-      <div class="showbar common">
-            <div class="showbar-msg">
-                <msg></msg>
-            </div>
-            <div class="showbar-selected">
-  <!--This inner-div will be replaced by <showbar_selected></showbar_selected>-->
-                <div style="width:100%;padding:02% 02%;">
-                        <span style="color:red;" class="md-title">
-                            {{err}}
-                        </span>                  
-                  <transition name="fade" mode="out-in">
-                    <div v-if="show" key="save">
+                                </span>
+                          </md-option>
+                          <md-option v-if="!equipnames.length">
+                                <md-spinner :md-size="40" 
+                                            md-indeterminate 
+                                            class="md-warn"
+                                >
+                                </md-spinner>                            
+                          </md-option>
+                      </md-select>
+              </md-input-container>
+          </div>
+          <md-divider></md-divider>
+          <div class="md-subhead" style="margin:10px 0 0 0;color:grey;"
+                                  v-if="!selected"
+          > 
+              Choose a sport for options !!
+          </div>
+          <transition name="fade" mode="out-in">
+                  <div v-if="show" key="save">
                         <span class="error-msg-span">
                           ! Picked item is already in the cart.
                         </span>
-                    </div>
-                    <div v-else key="edit">
-                    </div>
-                  </transition><br>
+                  </div>
+                  <div v-else key="edit">
+              </div>
+          </transition>
+          <div>
+                <md-chip  md-editable
+                          v-on:edit="additem(tit)"
+                          style="margin:5px 5px;"
+                          :disabled="!tit.rem"
+                          v-for="tit in filtered"
+                          :key="tit.equip"
+                >
+                    {{tit.equip}}
+                    {{tit.rem}}/{{tit.total}}
+                </md-chip>
+          </div>
+      </md-whiteframe>
+      <md-whiteframe md-elevation="1" style="padding:14px;margin-top:20px;">
                   <div class="md-subheading">Selected items </div>
-                      <md-chip md-deletable
-                                v-for="(til,index) in selectedcart"
-                                @delete="removeitem(index)"
-                                style="margin:5px 5px;"
-                                :key="index"
-                                class="md-accent"
-                              >
-                                {{til.equip}}
-                              <md-tooltip md-direction="bottom">Remove from cart</md-tooltip>
-                      </md-chip>
+                  <md-chip md-deletable
+                          v-for="(til,index) in selectedcart"
+                          @delete="removeitem(index)"
+                          style="margin:5px 5px;"
+                         :key="index"
+                         class="md-accent"
+                  >
+                        {{til.equip}}
+                      <md-tooltip md-direction="bottom">Remove from cart</md-tooltip>
+                  </md-chip>
                   <div >
                     <md-input-container>
-                      <label>Request Message</label>
+                      <label>Request Message*</label>
                       <md-textarea v-model="req.msg"></md-textarea>
                     </md-input-container>
                   </div>
                   <div style="text-align:right;">
                         <md-button class="md-primary md-raised"
                                     style="margin-right:0;"
-                                    @click="reqitem"
+                                    @click="readyObj"
+                                    :disabled="verifyreq"
                         >
                                   Request
                         </md-button>
                   </div>
-                </div>
-            </div>
-      </div>
+      </md-whiteframe>
+      <md-snackbar  md-position="bottom right" 
+                    ref="snackbar" 
+                    md-duration="3000"
+      >
+        <div :class="{snackbarMsg:!postStatClr}">
+            {{postStatMsg}}
+        </div>
+      </md-snackbar>
   </div>
 
 </template>
@@ -106,10 +111,9 @@ components:{
 },
   data () {
     return {
-      err:'required cannt be empty',
-      test:true,
       show:false,
-      truee:'',
+      postStatClr:true,
+      postStatMsg:'',
       selected:'',
       equipnames:[],
       filtered:[],
@@ -119,30 +123,9 @@ components:{
     }
   },
   created(){
-          var ref = dtb.ref("equipments/");
-          var arry=[]
-          var foo
-          foo=new Promise((resolve,reject)=>{
-                  ref.on("value", function(snapshot) {
-                    arry=[]
-                    if(snapshot.val()){
-                      for (let key in snapshot.val()) {
-                        arry.push(snapshot.val()[key])
-                      }
-                      resolve(arry)
-                    }
-                    else{
-                      reject([])
-                    }
-                  });
-          })
-
-          foo.then((bar)=>{
+          this.getEquips().then((bar)=>{
               this.equipnames=bar
           })
-
-          // this.equipnames=arry
-
   },
   computed:{
      sportsname:function(){
@@ -152,9 +135,45 @@ components:{
             })
         var bar=Array.from(new Set(foo))
         return  bar
+      },
+      verifyreq:function(){
+              if(this.req.msg && this.selectedcart.length){
+                return false
+              }
+              else return true
       }
   },
   methods:{
+    open(foo) {
+      if(foo){
+        this.postStatClr=true
+        this.postStatMsg='Successful, Check your dashboard for status.'
+      }
+      else{
+        this.postStatClr=false
+        this.postStatMsg='Error, Try again.'
+      }
+      this.$refs.snackbar.open();
+    },
+    getEquips:function(){
+              var ref = dtb.ref("equipments/");
+              var arry=[]
+              return  new Promise((resolve,reject)=>{
+                        ref.on("value", function(snapshot) {
+                          arry=[]
+                          // let check===snapshot.val() && snapshot.exists()
+                          if(snapshot.val()){
+                            for (let key in snapshot.val()) {
+                              arry.push(snapshot.val()[key])
+                            }
+                            resolve(arry)
+                          }
+                          else{
+                            reject([])
+                          }
+                        });
+                      })
+    }, 
     filterCategory:function (category) {
       this.filtered = []
       this.equipnames.forEach(c => {
@@ -164,7 +183,6 @@ components:{
       })
     },
     additem:function(foo){
-      //  this.selectedcart.push(event.target.innerHTML);
         var add=true
         this.selectedcart.forEach(c => {
           if (c === foo) {
@@ -183,24 +201,45 @@ components:{
     removeitem:function(index){
         this.selectedcart.splice(index,1);
     },
-    reqitem:function(){
-                var postsend={  id:'',user:'',date:'',cart:[],
-                                msg:'',status:'Pending',reply:''
-                              }
-                var newPostKey = dtb.ref().child('equipreqs').push().key;
-                    this.req.id=newPostKey
-                    this.selectedcart.forEach((e)=>{
-                          this.req.cart.push(e.id)
-                    })
-                    this.req.user=firebase.auth().currentUser.email.slice(0,9)
-                    this.req.date=new Date()
-                var updates = {};
-                    updates['/equipreqs/' + newPostKey] = this.req;
-                    // this.req=postsend
-                    this.selectedcart=[]
-                    dtb.ref().update(updates);
-                    dtb.ref('/activity/'+this.req.user+'/reqs/'+newPostKey).update({id:newPostKey})
-                return this.req=postsend
+    readyObj:function(){
+              if(!this.verifyreq){
+                  var postsend={  id:'',user:'',date:'',cart:[],
+                                  msg:'',status:'Pending',reply:''
+                                }      
+                  var newPostKey = dtb.ref().child('equipreqs').push().key;
+                      this.req.id=newPostKey
+                      this.selectedcart.forEach((e)=>{
+                            this.req.cart.push(e.id)
+                      })
+                      this.req.user=firebase.auth().currentUser.email.slice(0,9)
+                      this.req.date=new Date()
+                  var updates = {};
+                      updates['/equipreqs/' + newPostKey] = this.req;
+                      this.selected=''
+                      this.selectedcart=[]   
+                      this.filtered=[]
+                      //calling for post req to databse
+                      return this.reqitem(updates,newPostKey,postsend)               
+              }
+
+    },
+    reqitem:function(u,n,p){
+                    // first needs to be post on /equips then on/activity list
+                    dtb.ref().update(u,(err)=>{
+                        if(err==null){
+                            // let c='/activity/'+this.req.user+'/reqs/'+n
+                            // dtb.ref(c).update({id:n},(error)=>{
+                            //     if(error===null)
+                            //       this.open(1)
+                            // }) 
+                            this.open(1)      
+                        }
+                        else{
+                            this.open(0)
+                        }
+                        return this.req=p
+                    });
+                    
     },
 },
 
@@ -209,10 +248,17 @@ components:{
 </script>
 
 <style scoped>
-@media only screen and (max-width:7in){
+.wrap{
+  width:100%;
+  /*margin-top:-10vh;*/
+  font-family: 'Roboto', sans-serif;
+  margin-bottom:50px;
+  padding:10px;
+  position: relative;
+}
+/*@media only screen and (max-width:7in){
 .common{
-    width:97%!important;
-    margin-left:1.5%;
+    padding:5% !important;
   }
 .wrap-chipedit{
   display:inline-block;
@@ -221,89 +267,10 @@ components:{
 .sidebar{
   margin:2% 0% 1% 0%;
 }
+}*/
+.snackbarMsg{
+  color:red !important;
 }
-.wrap{
-  width:100%;
-  margin-top:-10vh;
-  font-family: 'Roboto', sans-serif;
-  margin-bottom:20vh;
-}
-.container-select{
-   padding-bottom:2%;padding-top:10px;
-   padding-left:4%;
-}
-.common{
-  display: inline-block;
-  float:left;
-  box-sizing: border-box;
-  -moz-box-sizing:border-box;
-  font-size:85%;overflow:none;
-  border-radius:4px;
-}
-.sidebar{
-  width:31%;
-  background-color: lightgrey;
-  font-family: 'Roboto', sans-serif;
-  word-wrap: break-word;overflow: hidden;
-  margin:2% 1% 1% 1%;
-  min-height: 300px;
-}
-.showbar{
-  width:66%;min-height:20px;margin:2% 1% 1% 0%;
-  border-radius:4px;
-}
-.showbar-msg{
-  border-radius:4px;
-  background-color:lightgrey;overflow: none;
-  font-family: 'Roboto', sans-serif;
-  box-sizing: border-box;-moz-box-sizing: border-box;
-  padding:2% 0%;min-height:20px;
-}
-.showbar-selected{
-  border-radius:4px;
-  background-color:lightgrey;overflow: none;
-  font-family: 'Roboto', sans-serif;
-  box-sizing: border-box;-moz-box-sizing: border-box;
-  padding:0% 0% 0 0%;min-height:20px;margin-top:1.5%;
-}
-/*this is css for innner sidebar*/
-.maincontainer{
-  width:100%;
-  box-sizing: border-box;
-  -moz-box-sizing: border-box;
-  padding:2% 3%;
-}
-.container-equip{
-  padding-left: 4%;
-  overflow: none;
-}
-
-.con-equipname{
-  padding:2% 4% 2% 4%;
-  margin:1% 0 4% 0%;
-  border-radius:4px;
-  background-color: grey;
-  box-sizing: border-box;
-  -moz-box-sizing: border-box;
-  float:left;
-  display: inline-block;
-  clear: both;
-}
-.con-equipname:hover{
-  color:lightgrey;
-}
-.con-equipavail{
-  padding:1% 3% 1% 3%;
-  background-color: lightgrey;
-  margin:2% 0 4% 0%;
-  box-sizing: border-box;
-  -moz-box-sizing: border-box;
-  text-align: center;
-  float:left;
-  display: inline-block;
-}
-/*css for inner-divs inside showbar-selected*/
-/*For error msg in showbar*/
 .error-msg-span{
   color:red;font-size:103%;font-weight:bold;padding:0;margin: 0;
 }

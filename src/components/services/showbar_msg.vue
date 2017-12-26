@@ -2,13 +2,13 @@
   <div class="wrapup">
             <ul style="margin:0%;padding:1%;"  class="md-body-1">
                 <li>
-                    First you need to choose sport.
+                    First you need to choose a sport.
                 </li>
                 <li>
                     Click on the euipments name to add them on your request cart.
                 </li>
                 <li>
-                    In provided text-area you can add a request message. *Recommended
+                    In provided text-area you have to add a request message. *Recommended
                 </li>
             </ul>
   </div>
