@@ -5,7 +5,7 @@
       </md-whiteframe>
       <md-whiteframe md-elevation="1" style="padding:10px;margin-top:20px;">
           <div>
-              <md-input-container style="width:40%;"  >
+              <md-input-container style="width:20%;"  >
                   <label for="sports">ChooseSport</label>
                       <md-select  name="sports"
                                   id="sportsitemlist"

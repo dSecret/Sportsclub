@@ -1,6 +1,6 @@
 <template>
   <div class="container-wrap">
-    <md-card class="cus-card">
+<!--     <md-card class="cus-card">
           <md-card-header>
             <div class="md-title">Update Equipments List</div>
           </md-card-header>
@@ -41,7 +41,7 @@
                   New
               </md-button>
           </md-card-actions>
-          <md-card-content v-if="start">
+          <md-card-content >
               <md-input-container>
                 <label>Sport</label>
                 <md-input type="text" v-model="updatelist.sport"></md-input>
@@ -56,22 +56,45 @@
                   <label>Total</label>
                   <md-input type="number" v-model="updatelist.total"></md-input>
               </md-input-container>
+              <md-tabs class="md-transparent">
+                <md-tab  md-label="New">
+                    qqqqqqqq<newequip></newequip>sssssssssss
+                </md-tab>
+                <md-tab  md-label="Existing">
+                    <oldequip></oldequip>ssssssssssssssssss
+                </md-tab>
+              </md-tabs>
           </md-card-content>
 
           <md-card-actions v-if="start">
             <md-button @click="addSel">SaveEdits</md-button>
           </md-card-actions>
-    </md-card>
+    </md-card> -->
+    <md-whiteframe md-elevation="2">
+        <md-tabs class="md-transparent">
+            <md-tab  md-label="New">
+                <newequip></newequip>
+            </md-tab>
+            <md-tab  md-label="Existing">
+                <oldequip></oldequip>
+            </md-tab>
+        </md-tabs>
+    </md-whiteframe>
   </div>
 </template>
 
 <script>
+import newequip from '../../components/admin/newequip.vue'
+import oldequip from '../../components/admin/oldequip.vue'
 import firebase from 'firebase'
 var dtb=firebase.database()
 
 
 export default {
-
+  components:{
+    newequip,
+    oldequip
+  },
   data () {
     return {
         updatelist:{sport:'',equip:'',total:0,id:'',rem:0},
