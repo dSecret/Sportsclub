@@ -108,8 +108,10 @@ export default {
   methods:{
     getBack:function(foo,bar,index){
               var updates = {};
+              var updatees2={}
                   this.equips.forEach(e=>{
                           if(e.id===foo){
+                              updatees2['/backupequipments'+e.id]=e
                               e.rem=e.rem+1
                               updates['/equipments/'+ e.id] = e;
                           }
