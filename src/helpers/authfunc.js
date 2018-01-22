@@ -1,5 +1,5 @@
 import firebase from 'firebase'
-
+var dtb=firebase.database()
 // importing config keys to connect our SPA with firebase app.
 import  {config} from './firebaseConfig'
 import  firebaseui from 'firebaseui'
@@ -57,12 +57,22 @@ export function isLoggedIn(){
 	   return new Promise((resolve, reject) => {
       firebase.auth().onAuthStateChanged((user) => {
           if(user){
-              
-              userinfo.name=user.displayName
-              userinfo.email=user.email
-              userinfo.photoUrl=user.photoURL
-              // userinfo.name=user.uid
-          		resolve(userinfo)
+              const id=user.email.slice(0,-15)
+                    dtb.ref('/users/'+id).on('value',(snap)=>{
+                      if(snap.exists()){
+                            userinfo.name=user.displayName
+                            userinfo.email=user.email
+                            userinfo.photoUrl=user.photoURL
+                            // userinfo.name=user.uid
+                            resolve(userinfo)
+                        // this.getList(0,id,'reqs')
+                        // this.getList(1,id,'issued')
+                      }
+                      else{
+                        return logOut()
+                      }
+                    })              
+
           }
           else{
              reject({"name":"","email":"","photoUrl":""}) 
