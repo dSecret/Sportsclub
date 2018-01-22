@@ -1,6 +1,7 @@
 <template lang="html">
 <div class="container">
-  <h1>Wait for a moment.....Logging in. </h1>
+  <h1> Auth </h1>
+  <h2><router-link to="/">Home</router-link></h2>
   <div id="firebaseui-auth-container"></div>
   </div>
 </template>

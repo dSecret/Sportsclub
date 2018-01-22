@@ -13,10 +13,7 @@
 				    <img :src="post.banner" class="banner"alt="People">
 				  </md-card-media>
 				  <md-card-content>
-				    {{post.body.slice(0,20)}}...
-				    <router-link :to="'/posts/'+post.id">
-				    	[SeeMore]
-				    </router-link>
+				    {{post.body}}
 				  </md-card-content>
 
 				  <md-card-actions>
@@ -40,13 +37,13 @@
 			</md-card>
 	
 			<!-- scroll to top button -->
-<!-- 			<a href="#scrollTop" style="z-index:1;">
+			<a href="#scrolldivover" style="z-index:0;">
 		         <md-button class="md-fab md-medium md-accent locate"
 							style="background-color:#F48FB1;"
 		         >
 		            <md-icon>eject</md-icon>
 		          </md-button>
-      		</a> -->
+      		</a>
   </div>
 </template>
 

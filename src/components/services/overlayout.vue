@@ -42,13 +42,11 @@
                         <div style="text-align:right;">
                               <md-button  class="md-primary md-raised"
                                           @click="reactReq(1)"
-                                          :disabled="checkMsg"
                               >
                                 ConfirmReq
                               </md-button>
                               <md-button  class="md-primary" 
                                           @click="reactReq(0)"
-                                          :disabled="checkMsg"
                               >
                                   CancelReq
                               </md-button>
@@ -103,6 +101,7 @@ export default {
           })
           foo.then((bar)=>{
               this.equipnames=bar
+              console.log(bar[0].sport)
           })
     },
     computed:{
@@ -115,10 +114,8 @@ export default {
                         }
                     })
                 })
+                console.log('foo',foo.length)
             return foo
-        },
-        checkMsg:function(){
-            return this.reply==''
         }
     },
     methods:{
@@ -135,7 +132,6 @@ export default {
               }
               else{
                     bar.status='Cancel'
-                    this.handelCancel(bar)
               }
               var updates = {};
                   updates['/equipreqs/'+ bar.id] = bar;
@@ -165,18 +161,10 @@ export default {
                     updates['/issuedequip/'+ newKey] = bar;
                     dtb.ref().update(updates)
                     bar={id:'',user:'',date:'',fine:0,equip:''}
-                    // dtb.ref('/activity/'+this.req.user+'/issued/'+newKey).update({id:newKey})
+                    dtb.ref('/activity/'+this.req.user+'/issued/'+newKey).update({id:newKey})
               })
-              dtb.ref('/BUequipreqs/'+this.req.id).update(this.req)
               dtb.ref('/equipreqs/'+this.req.id).remove()
-              this.$router.push('/admin/equipreq')
               this.closediv()
-    },
-    handelCancel:function(bar){
-        // this.closediv()
-        return dtb.ref('/BUequipreqs/'+bar.id).update(bar,()=>{
-            dtb.ref('/equipreqs/'+bar.id).remove()
-        })
     }
   }
 }

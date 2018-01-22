@@ -5,9 +5,10 @@
 					<div class="cont-dp">
 						<img class="dp" :src="user.photoUrl"/>
 					</div>
-					<div class="profile-info" >
-							<div class="mylist-item "v-if="user.email">{{user.name}}</div>
-							<div class="mylist-item "v-if="user.email">{{user.email}}</div>
+					<div class="profile-info" v-if="user.email">
+							<div class="mylist-item ">{{user.name}}</div>
+							<div class="mylist-item ">{{user.email}}</div>
+							<div class="mylist-item ">+91-9795455055 </div>
 							<div ><md-button @click="lgOut">LogOut</md-button></div>
 							<md-spinner md-indeterminate 
 										class="md-accent" 

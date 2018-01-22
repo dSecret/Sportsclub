@@ -5,10 +5,6 @@ import Routes from './router.js'
 import VueMaterial from 'vue-material'
 // import {store} from './store/store.js'
 // import 'vue-material/dist/vue-material.min.css'
-import firebase from 'firebase'
-
-// firebase.initializeApp(config);
-
 
 Vue.use(VueRouter)
 

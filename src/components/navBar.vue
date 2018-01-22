@@ -14,7 +14,6 @@
       </md-whiteframe>
       <md-sidenav class="md-left" 
                   ref="leftSidenav"
-                  style="z-index:500;"
       >
         <sidenavCurrUser  style="z-index:100;" 
                           v-on:closemenu="closeLeftSidenav()"
@@ -104,7 +103,7 @@ export default {
   top:0;
   left:0;
   width:100vw;
-  z-index:100;
+  z-index:1;
   background-color:#03A9F4 !important;
         /*background-image: linear-gradient(180deg, hsl(200, 81%, 30%) 0%, #2AF598 100%) !important;*/
 }

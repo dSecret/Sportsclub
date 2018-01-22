@@ -19,9 +19,7 @@
                         <md-table-cell 
                                         style="color:red;cursor:pointer"
                                         >
-                                        <div @click="openDialog('dialog1',tit.equip,tit.id,index)">
-                                        Return</div>
-                                        <!-- tit.equip,tit.id,index -->
+                                        <div @click="getBack(tit.equip,tit.id,index)">Return</div>
                         </md-table-cell>
                       </md-table-row>
                     </md-table-body>
@@ -32,17 +30,7 @@
                                 class="md-warn"
                           >
                     </md-spinner>
-                </div>
-                <md-dialog md-open-from="#custom" md-close-to="#custom" ref="dialog1">
-                  <md-dialog-title>Confirm Transaction</md-dialog-title>
-
-                  <md-dialog-content>Proceed for return if fine is resolved</md-dialog-content>
-
-                  <md-dialog-actions>
-                    <md-button class="md-primary" @click="closeDialog('dialog1')">Cancel</md-button>
-                    <md-button class="md-primary" @click="handleReturn('dialog1')">Return</md-button>
-                  </md-dialog-actions>
-                </md-dialog> 
+                </div> 
   </md-whiteframe>
 </template>
 
@@ -55,10 +43,7 @@ export default {
       curr:{id:'',user:'',date:'',fine:0,equip:''},
       req:{id:'',user:'',date:'',fine:0,equip:''},
       issued:[{id:'',user:'',date:'',fine:0,equip:''}],
-      equips:[],
-      localfoo:'',
-      localindex:0,
-      localbar:''
+      equips:[]
     }
   },
   created(){
@@ -69,12 +54,13 @@ export default {
           var foo
           var zoo
           foo=new Promise((resolve,reject)=>{
-                  ref.on("value", function(snap) {
+                  ref.on("value", function(snapshot) {
                     arry=[]
-                    if(snap.val()){
-                        let arrayOfkeys = Object.keys(snap.val()).sort().reverse();
-                          arry = arrayOfkeys.map(key => snap.val()[key])
-                        resolve(arry) 
+                    if(snapshot.val()){
+                      for (let key in snapshot.val()) {
+                        arry.push(snapshot.val()[key])
+                      }
+                      resolve(arry)
                     }
                     else{
                       reject([])
@@ -125,30 +111,15 @@ export default {
               var updatees2={}
                   this.equips.forEach(e=>{
                           if(e.id===foo){
+                              updatees2['/backupequipments'+e.id]=e
                               e.rem=e.rem+1
                               updates['/equipments/'+ e.id] = e;
                           }
                   })
-                  dtb.ref('/BUissuedequip/'+bar).update(this.issued[index])
                   dtb.ref().update(updates)
                   dtb.ref('/issuedequip/'+bar).remove()
                   this.issued.splice(index,1)
-    },
-    openDialog(ref,foo,bar,index) {
-        this.localbar=bar
-        this.localindex=index
-        this.localfoo=foo
-        this.$refs[ref].open();
-    },
-    closeDialog(ref) {
-      this.$refs[ref].close();
-    },
-    handleReturn(ref){
-      var t=this
-      this.getBack(t.localfoo,t.localbar,t.localindex)
-      this.$refs[ref].close();
-
-    }
+      }
   }
 }
 </script>
