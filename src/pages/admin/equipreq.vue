@@ -57,13 +57,12 @@ export default {
           var arry=[]
           var foo
           foo=new Promise((resolve,reject)=>{
-                  ref.on("value", function(snapshot) {
+                  ref.on("value", function(snap) {
                     arry=[]
-                    if(snapshot.val()){
-                      for (let key in snapshot.val()) {
-                        arry.push(snapshot.val()[key])
-                      }
-                      resolve(arry)
+                    if(snap.val()){
+                        let arrayOfkeys = Object.keys(snap.val()).sort().reverse();
+                          arry = arrayOfkeys.map(key => snap.val()[key])
+                        resolve(arry) 
                     }
                     else{
                       reject([])
