@@ -19,7 +19,7 @@ const services =()=> import('./pages/services/services.vue')
 	const issued=()=>import('./pages/services/issued.vue')
 
 // authfunctions
-import {requireauth,authenticated,checkadmin} from './helpers/authfunc'
+import {requireauth,authenticated,checkadmin,checkUser} from './helpers/authfunc'
 
 
 export default [
@@ -43,7 +43,7 @@ export default [
 			{path:'issued',component:issued}
 		]
 	},
-	{path:'/services',component:services,
+	{path:'/services',component:services,beforeEnter:checkUser,
 		children:[
 			{path:'reqequip',component:reqequip}
 			

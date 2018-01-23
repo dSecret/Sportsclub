@@ -18,10 +18,12 @@
 							
 				</md-whiteframe>
 				<md-whiteframe md-elevation="2" class="cont-list">
-						{{reqs}}
+						<!-- {{reqs}} -->
+						This Feature will be available soon.
 				</md-whiteframe>
 				<md-whiteframe md-elevation="2" class="cont-list">
-						{{issued}}
+						<!-- {{issued}} -->
+						This Feature will be available soon.
 				</md-whiteframe>
 			</div>
 			<div v-if="errorr">
@@ -49,35 +51,35 @@ export default {
   		var id
   		var err
     	isLoggedIn().then(userinfo => {
-      		// this.user=userinfo
-      				id=userinfo.email.slice(0,9)
-				let foo=userinfo.email.includes('nitdelhi.ac.in')
-				if(foo){
-					dtb.ref('/users/'+id).on('value',(snap)=>{
-								if(snap.exists()){
-									// this.getList(0,id,'reqs')
-									// this.getList(1,id,'issued')
-									return this.user=snap.val()
-								}
-								else{
-									 	dtb.ref('users/'+ id).set(userinfo)
-									 	dtb.ref('/users/'+id).on('value',(snap)=>{
-											if(snap.exists()){
-												// this.getList(0,id,'reqs')
-												// this.getList(1,id,'issued')
-												return this.user=snap.val()
-											}
-											else{
-												return logOut()
-											}
-										})
-								}
-					})					
+      		this.user=userinfo
+    //   				id=userinfo.email.slice(0,9)
+				// let foo=userinfo.email.includes('nitdelhi.ac.in')
+				// if(foo){
+				// 	dtb.ref('/users/'+id).on('value',(snap)=>{
+				// 				if(snap.exists()){
+				// 					// this.getList(0,id,'reqs')
+				// 					// this.getList(1,id,'issued')
+				// 					return this.user=snap.val()
+				// 				}
+				// 				else{
+				// 					 	dtb.ref('users/'+ id).set(userinfo)
+				// 					 	dtb.ref('/users/'+id).on('value',(snap)=>{
+				// 							if(snap.exists()){
+				// 								// this.getList(0,id,'reqs')
+				// 								// this.getList(1,id,'issued')
+				// 								return this.user=snap.val()
+				// 							}
+				// 							else{
+				// 								return logOut()
+				// 							}
+				// 						})
+				// 				}
+				// 	})					
 						
-				}
-				else{
-					return logOut()
-				}
+				// }
+				// else{
+				// 	return logOut()
+				// }
 
     	})
 

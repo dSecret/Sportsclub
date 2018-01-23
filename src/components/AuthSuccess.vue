@@ -26,9 +26,9 @@ export default {
   },
   created() {
     
-    isLoggedIn().then(userinfo => {
-      this.user=userinfo
-    })
+    // isLoggedIn().then(userinfo => {
+    //   this.user=userinfo
+    // })
   },
   methods: {
     logOut() {

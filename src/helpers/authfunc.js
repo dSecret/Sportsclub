@@ -1,12 +1,12 @@
 import firebase from 'firebase'
-var dtb=firebase.database()
+firebase.initializeApp(config);
+
 // importing config keys to connect our SPA with firebase app.
 import  {config} from './firebaseConfig'
 import  firebaseui from 'firebaseui'
 
 // app is initialized
-firebase.initializeApp(config);
-
+var dtb=firebase.database()
 
 export function checkadmin(to, from, next){
     firebase.auth().onAuthStateChanged((user) => {
@@ -25,7 +25,18 @@ export function checkadmin(to, from, next){
 
      })
 }
-
+export function checkUser(to, from, next){
+    isLoggedIn().then(user=>{
+        const id=user.email.slice(0,-15)
+        const match='@nitdelhi.ac.in'
+              if(id===match){
+                  return next()
+              }
+              else{
+                  return next('/')  
+              }      
+    })
+}
 // this func returns whether user is logged in othewise it redirects user to login page.
 export function requireauth(to, from, next){
     firebase.auth().onAuthStateChanged((user) => {
@@ -57,9 +68,9 @@ export function isLoggedIn(){
 	   return new Promise((resolve, reject) => {
       firebase.auth().onAuthStateChanged((user) => {
           if(user){
-              const id=user.email.slice(0,-15)
-                    dtb.ref('/users/'+id).on('value',(snap)=>{
-                      if(snap.exists()){
+              // const id=user.email.slice(0,-15)
+              //       dtb.ref('/users/'+id).on('value',(snap)=>{
+              //         if(snap.exists()){
                             userinfo.name=user.displayName
                             userinfo.email=user.email
                             userinfo.photoUrl=user.photoURL
@@ -67,19 +78,12 @@ export function isLoggedIn(){
                             resolve(userinfo)
                         // this.getList(0,id,'reqs')
                         // this.getList(1,id,'issued')
-                      }
-                      else{
-                        return logOut()
-                      }
-                    })              
-
-          }
+                  }
           else{
              reject({"name":"","email":"","photoUrl":""}) 
           }
        })
     })
-    
 }
 // to call logOut
 export function logOut(){
