@@ -145,38 +145,39 @@ export default {
     updateIL:function(foo){
               var bar={}
               var updates = {};
-              foo.forEach(e=>{
+              const posts2=foo.map(e=>{
                     bar=e
                     bar.rem=bar.rem-1
                     updates['/equipments/'+ bar.id] = bar;
-                    dtb.ref().update(updates)
+                    return dtb.ref().update(updates)
               })
+              return Promise.all(posts2)
     },
     updateII:function(foo){
               var bar={id:'',user:'',date:'',fine:0,equip:''}
               var updates = {};
-              foo.forEach(e=>{
+              const posts = foo.map(e => {
                     bar.user=this.req.user
                     bar.date=new Date()
                     bar.equip=e.id
 
-                var newKey=dtb.ref().child('issuedequip').push().key
+                  var newKey=dtb.ref().child('issuedequip').push().key
                     bar.id=newKey
                     updates['/issuedequip/'+ newKey] = bar;
-                    dtb.ref().update(updates)
+                    // dtb.ref().update(updates)
                     bar={id:'',user:'',date:'',fine:0,equip:''}
-                    // dtb.ref('/activity/'+this.req.user+'/issued/'+newKey).update({id:newKey})
+                  return dtb.ref().update(updates)
               })
-              dtb.ref('/BUequipreqs/'+this.req.id).update(this.req)
               dtb.ref('/equipreqs/'+this.req.id).remove()
-              this.$router.push('/admin/equipreq')
               this.closediv()
+               Promise.all(posts).then(()=>{
+                    // console.log('get ready')
+               })
+               return this.$emit('reload',this.req)
     },
     handelCancel:function(bar){
-        // this.closediv()
-        return dtb.ref('/BUequipreqs/'+bar.id).update(bar,()=>{
-            dtb.ref('/equipreqs/'+bar.id).remove()
-        })
+        this.closediv()
+        dtb.ref('/equipreqs/'+bar.id).remove()
     }
   }
 }

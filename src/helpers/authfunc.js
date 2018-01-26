@@ -27,13 +27,12 @@ export function checkadmin(to, from, next){
 }
 export function checkUser(to, from, next){
     isLoggedIn().then(user=>{
-        const id=user.email.slice(0,-15)
-        const match='@nitdelhi.ac.in'
-              if(id===match){
-                  return next()
+        var str=user.email
+              if(str.search('@nitdelhi.ac.in')==-1){
+                  return next('/')
               }
               else{
-                  return next('/')  
+                  return next()  
               }      
     })
 }

@@ -33,7 +33,7 @@
                     </md-spinner>
                 </div> 
           </md-whiteframe>
-        <overlayout :req="curr"></overlayout>
+        <overlayout :req="curr" v-on:reload="emittedEvent($event)"></overlayout>
   </div>
 </template>
 
@@ -53,6 +53,19 @@ export default {
     }
   },
   created(){
+      this.loadReqs()
+  },
+  computed:{
+     filt:function(){
+          return this.reqs
+     }
+  },
+  methods:{
+    overlay:function(curr){
+        this.curr=curr;
+        document.getElementById('overdiv').style.height='100vh'
+    },
+    loadReqs:function(){
           var ref = dtb.ref("equipreqs/");
           var arry=[]
           var foo
@@ -73,16 +86,10 @@ export default {
           foo.then((bar)=>{
               this.reqs=bar
           })
-  },
-  computed:{
-     filt:function(){
-          return this.reqs
-     }
-  },
-  methods:{
-    overlay:function(curr){
-        this.curr=curr;
-        document.getElementById('overdiv').style.height='100vh'
+    },
+    emittedEvent:function(foo){
+        const index=this.reqs.indexOf(foo)
+        this.reqs.splice(index,1);
     }
   }
 }

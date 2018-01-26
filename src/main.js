@@ -9,6 +9,7 @@ import firebase from 'firebase'
 
 // firebase.initializeApp(config);
 
+// export const bus=new Vue()
 
 Vue.use(VueRouter)
 
