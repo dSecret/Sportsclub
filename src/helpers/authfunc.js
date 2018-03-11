@@ -1,4 +1,6 @@
 import firebase from 'firebase'
+// import Vue from 'vuex'
+import {store} from '../store/store.js'
 firebase.initializeApp(config);
 
 // importing config keys to connect our SPA with firebase app.
@@ -9,10 +11,9 @@ import  firebaseui from 'firebaseui'
 var dtb=firebase.database()
 
 export function checkadmin(to, from, next){
-    firebase.auth().onAuthStateChanged((user) => {
-          if(user.email){
+          if(store.getters.getUser.email){
                   let email='161210004@nitdelhi.ac.in'
-                  if(user.email===email){
+                  if(store.getters.getUser.email===email){
                       return next()
                   }
                   else{
@@ -22,42 +23,36 @@ export function checkadmin(to, from, next){
           else{
                   return next('/')
           }
-
-     })
 }
 export function checkUser(to, from, next){
-    isLoggedIn().then(user=>{
-        var str=user.email
+        var str=store.getters.getUser.email
               if(str.search('@nitdelhi.ac.in')==-1){
                   return next('/')
               }
               else{
                   return next()  
               }      
-    })
 }
 // this func returns whether user is logged in othewise it redirects user to login page.
 export function requireauth(to, from, next){
-    firebase.auth().onAuthStateChanged((user) => {
-      if(user){
+      if(store.getters.getUser.email){
         return next()
       }
       else{
         return next('/login')
       }
-     })
+     // next('/')
 }
 
 // once a user is authenticated route will fallback to profile page
 export function authenticated(to, from, next){
-    firebase.auth().onAuthStateChanged((user) => {
-      if(user){
+      if(store.getters.getUser.email){
         return next('/profile')
       }
       else{
         return next()
       }
-     })
+     
 }
 
 // it checks whether a user is logged in and accordingly returns the user's profile.

@@ -40,7 +40,6 @@ import {isLoggedIn,logOut} from '../helpers/authfunc'
 export default {
 	data(){
 		return{
-			user: {},
 			errorr:false,
 			reqs:[],
 			issued:[],
@@ -50,39 +49,11 @@ export default {
   	created() {
   		var id
   		var err
-    	isLoggedIn().then(userinfo => {
-      		this.user=userinfo
-    //   				id=userinfo.email.slice(0,9)
-				// let foo=userinfo.email.includes('nitdelhi.ac.in')
-				// if(foo){
-				// 	dtb.ref('/users/'+id).on('value',(snap)=>{
-				// 				if(snap.exists()){
-				// 					// this.getList(0,id,'reqs')
-				// 					// this.getList(1,id,'issued')
-				// 					return this.user=snap.val()
-				// 				}
-				// 				else{
-				// 					 	dtb.ref('users/'+ id).set(userinfo)
-				// 					 	dtb.ref('/users/'+id).on('value',(snap)=>{
-				// 							if(snap.exists()){
-				// 								// this.getList(0,id,'reqs')
-				// 								// this.getList(1,id,'issued')
-				// 								return this.user=snap.val()
-				// 							}
-				// 							else{
-				// 								return logOut()
-				// 							}
-				// 						})
-				// 				}
-				// 	})					
-						
-				// }
-				// else{
-				// 	return logOut()
-				// }
-
-    	})
-
+  },
+  computed:{
+  	user(){
+      return this.$store.getters.getUser
+    }
   },
   methods:{
   		lgOut:function(){

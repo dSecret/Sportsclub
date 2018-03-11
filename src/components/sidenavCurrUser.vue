@@ -5,7 +5,7 @@
       	<div align="center">
       		<a href="http://nitdelhi.ac.in">
             	<img src="/src/assets/nitdlogo.gif" 
-            	alt="People" class="logo">
+            	alt="Logo" class="logo">
             </a>
         </div>
 		<md-list-item 	style="background-color:#0D47A1;" 
@@ -60,7 +60,7 @@ import {isLoggedIn,logOut,logIn} from '../helpers/authfunc'
 export default {
 	data() {
 	    return {
-	      user: {},
+	      // user: {},
 	      options1:[
 	      			{tit:'Home',linki:'/',ico:'home'},
 	      			{tit:'About',linki:'/about',ico:'book',},
@@ -77,9 +77,14 @@ export default {
 	    }
  	},
  	created() {
-       isLoggedIn().then(userinfo => {
-      		this.user=userinfo
-   		 })
+      //  isLoggedIn().then(userinfo => {
+      // 		this.user=userinfo
+   		 // })
+  	},
+  	computed:{
+			user(){
+				return this.$store.getters.getUser
+			}
   	},
   	methods:{
   		close:function(foo){

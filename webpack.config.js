@@ -2,24 +2,26 @@ var path = require('path')
 var webpack = require('webpack')
 const CleanWebpackPlugin = require('clean-webpack-plugin');
 var BundleAnalyzerPlugin = require('webpack-bundle-analyzer').BundleAnalyzerPlugin;
+var CompressionPlugin = require("compression-webpack-plugin");
+
 
 module.exports = {
   entry: './src/main.js',
   plugins: [
      new CleanWebpackPlugin(['dist']),
-     new webpack.optimize.CommonsChunkPlugin({ name: 'common',filename: "commons.js" }),
-     new BundleAnalyzerPlugin({
-            analyzerMode: 'disabled',
-            analyzerHost: '127.0.0.1',
-            analyzerPort: 8888,
-            reportFilename: 'report.html',
-            defaultSizes: 'parsed',
-            openAnalyzer: false,
-            generateStatsFile: false,
-            statsFilename: 'stats.json',
-            statsOptions: null,
-            logLevel: 'info'
-     })
+     new webpack.optimize.CommonsChunkPlugin({ name: 'common',filename: "commons.js" })
+     // new BundleAnalyzerPlugin({
+     //        analyzerMode: 'disabled',
+     //        analyzerHost: '127.0.0.1',
+     //        analyzerPort: 8888,
+     //        reportFilename: 'report.html',
+     //        defaultSizes: 'parsed',
+     //        openAnalyzer: false,
+     //        generateStatsFile: false,
+     //        statsFilename: 'stats.json',
+     //        statsOptions: null,
+     //        logLevel: 'info'
+     // })
   ],
   output: {
     path: path.resolve(__dirname, './dist'),
@@ -78,13 +80,20 @@ if (process.env.NODE_ENV === 'production') {
       }
     }),
     new webpack.optimize.UglifyJsPlugin({
-      // sourceMap: true,
+      sourceMap: false,
       compress: {
         warnings: false
       }
     }),
     new webpack.LoaderOptionsPlugin({
       minimize: true
+    }),
+    new CompressionPlugin({
+      asset: "[path].gz[query]",
+      algorithm: "gzip",
+      test: /\.js$|\.css$|\.html$/,
+      threshold: 10240,
+      minRatio: 1
     })
   ])
 }

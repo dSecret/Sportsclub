@@ -11,6 +11,14 @@ export default {
   components: {
     navbar,
   },
+  computed:{
+    getUser(){
+      return this.$store.getters.getUser
+    }
+  },
+  created(){
+    this.$store.dispatch('setUser')
+  }
 }
 </script>
 

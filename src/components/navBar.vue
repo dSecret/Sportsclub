@@ -46,17 +46,17 @@ export default {
       userId: '',
       name: '',
       email: '',
-      user: {},
+      // user: {},
       logged:null,
     }
   },
   computed:{
-    
+    user(){
+      return this.$store.getters.getUser
+    }
   },
   created() {
-       isLoggedIn().then(userinfo => {
-      this.user=userinfo
-    })
+       // this.$store.dispatch('setUser')
   },
   methods: {
     logOut() {

@@ -21,7 +21,6 @@ const services =()=> import('./pages/services/services.vue')
 // authfunctions
 import {requireauth,authenticated,checkadmin,checkUser} from './helpers/authfunc'
 
-
 export default [
     { path: '/', component: home },
     {path:'/posts/:id',component:openpost},

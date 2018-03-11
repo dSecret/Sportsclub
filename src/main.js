@@ -3,15 +3,19 @@ const App =()=>import('./App.vue')
 import VueRouter from 'vue-router'
 import Routes from './router.js'
 import VueMaterial from 'vue-material'
-// import {store} from './store/store.js'
+import {store} from './store/store.js'
+import Vuex from 'vuex'
 // import 'vue-material/dist/vue-material.min.css'
 import firebase from 'firebase'
+import {config} from './helpers/firebaseConfig.js'
 
-// firebase.initializeApp(config);
 
-// export const bus=new Vue()
+
+
+export const bus=new Vue()
 
 Vue.use(VueRouter)
+Vue.use(Vuex)
 
 const router =new VueRouter({
   routes:Routes,
@@ -45,10 +49,11 @@ Vue.material.registerTheme({
 
 new Vue({
   router,
-  // store:store,
+  store:store,
   created() {
-        // console.log(this.$store.state.name)
-    },
+// firebase.initializeApp(config);
+        // this.$store.dispatch('setUser')
+  },
   el: '#app',
   render: h => h(App)
 });
